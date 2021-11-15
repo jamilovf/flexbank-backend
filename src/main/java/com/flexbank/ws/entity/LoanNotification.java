@@ -44,8 +44,7 @@ public class LoanNotification {
     @Column(name = "type")
     private String type;
 
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Customer customerId;
+    @Column(name = "customer_id")
+    private Integer customerId;
 
 }
