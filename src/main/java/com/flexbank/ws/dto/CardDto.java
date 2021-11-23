@@ -5,18 +5,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class LoanNotificationDto {
-
+public class CardDto {
     private Integer id;
-    private Double amount;
-    private LocalDate dueTo;
-    private int interestRate;
-    private String type;
-
+    private String cardNumber;
+    private String expiryDate;
+    private Double balance;
 }

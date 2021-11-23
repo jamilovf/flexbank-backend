@@ -35,7 +35,7 @@ public class LoanRequest {
     private String type;
 
     @Column(name = "amount")
-    private int amount;
+    private Double amount;
 
     @Column(name = "period")
     private int period;

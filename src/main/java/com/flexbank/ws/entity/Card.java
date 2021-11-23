@@ -39,10 +39,9 @@ public class Card {
     private LocalDate expiryDate;
 
     @Column(name = "balance")
-    private int balance;
+    private Double balance;
 
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Customer customerId;
+    @Column(name = "customer_id")
+    private Integer customerId;
 
 }

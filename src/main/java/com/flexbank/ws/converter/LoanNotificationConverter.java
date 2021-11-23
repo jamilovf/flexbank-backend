@@ -2,7 +2,6 @@ package com.flexbank.ws.converter;
 
 import com.flexbank.ws.dto.LoanNotificationDto;
 import com.flexbank.ws.entity.LoanNotification;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,9 +13,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LoanNotificationConverter {
 
-    @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    public LoanNotificationConverter(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     public LoanNotificationDto entityToDto(LoanNotification loanNotification){
         LoanNotificationDto loanNotificationDto = modelMapper.map(loanNotification, LoanNotificationDto.class);

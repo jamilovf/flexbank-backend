@@ -33,7 +33,7 @@ public class LoanNotification {
     private Integer id;
 
     @Column(name = "amount")
-    private int amount;
+    private Double amount;
 
     @Column(name = "due_to")
     private LocalDate dueTo;

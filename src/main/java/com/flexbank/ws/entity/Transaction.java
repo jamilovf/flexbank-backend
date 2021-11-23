@@ -34,7 +34,7 @@ public class Transaction {
     private Integer id;
 
     @Column(name = "amount")
-    private int amount;
+    private Double amount;
 
     @Column(name = "type")
     private String type;
