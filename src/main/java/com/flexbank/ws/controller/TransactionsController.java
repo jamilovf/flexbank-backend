@@ -1,7 +1,7 @@
 package com.flexbank.ws.controller;
 
-import com.flexbank.ws.dto.CardDto;
-import com.flexbank.ws.service.inter.CardService;
+import com.flexbank.ws.dto.TransactionDto;
+import com.flexbank.ws.service.inter.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,23 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cards")
-public class CardsController {
+@RequestMapping("/api/transactions")
+public class TransactionsController {
 
-    private final CardService cardService;
+    private final TransactionService transactionService;
 
     @Autowired
-    public CardsController(CardService cardService) {
-        this.cardService = cardService;
+    public TransactionsController(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
     @GetMapping("/findAll")
     public ResponseEntity<?> findAllByCustomerId(@RequestParam Integer customerId){
 
-        List<CardDto> cardDtos =
-                cardService.findAllByCustomerId(customerId);
+        List<TransactionDto> transactionDtos =
+                transactionService.findAllByCustomerId(customerId);
 
-        return ResponseEntity.ok(cardDtos);
+        return ResponseEntity.ok(transactionDtos);
     }
-
 }

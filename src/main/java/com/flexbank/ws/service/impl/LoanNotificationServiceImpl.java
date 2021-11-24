@@ -4,7 +4,7 @@ import com.flexbank.ws.converter.LoanNotificationConverter;
 import com.flexbank.ws.dto.LoanNotificationDto;
 import com.flexbank.ws.entity.LoanNotification;
 import com.flexbank.ws.repository.LoanNotificationRepository;
-import com.flexbank.ws.service.LoanNotificationService;
+import com.flexbank.ws.service.inter.LoanNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

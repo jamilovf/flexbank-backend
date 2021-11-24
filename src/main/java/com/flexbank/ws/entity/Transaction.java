@@ -48,8 +48,6 @@ public class Transaction {
     @Column(name = "created_at_time")
     private LocalTime createdAtTime;
 
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    @ManyToOne
-    private Customer customerId;
+    private Integer customerId;
 
 }

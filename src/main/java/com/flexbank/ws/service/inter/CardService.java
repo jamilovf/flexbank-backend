@@ -1,4 +1,4 @@
-package com.flexbank.ws.service;
+package com.flexbank.ws.service.inter;
 
 import com.flexbank.ws.dto.CardDto;
 

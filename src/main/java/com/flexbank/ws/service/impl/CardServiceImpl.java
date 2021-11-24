@@ -6,7 +6,7 @@ import com.flexbank.ws.entity.Card;
 import com.flexbank.ws.entity.Customer;
 import com.flexbank.ws.repository.CardRepository;
 import com.flexbank.ws.repository.CustomerRepository;
-import com.flexbank.ws.service.CardService;
+import com.flexbank.ws.service.inter.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

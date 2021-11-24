@@ -1,7 +1,7 @@
 package com.flexbank.ws.controller;
 
 import com.flexbank.ws.dto.LoanNotificationDto;
-import com.flexbank.ws.service.LoanNotificationService;
+import com.flexbank.ws.service.inter.LoanNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
