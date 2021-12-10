@@ -10,12 +10,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/loanNotifications")
-public class LoanNotificationsController {
+public class LoanNotificationController {
 
     private final LoanNotificationService loanNotificationService;
 
     @Autowired
-    public LoanNotificationsController(LoanNotificationService loanNotificationService) {
+    public LoanNotificationController(LoanNotificationService loanNotificationService) {
         this.loanNotificationService = loanNotificationService;
     }
 
