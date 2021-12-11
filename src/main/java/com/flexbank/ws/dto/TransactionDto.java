@@ -13,9 +13,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class TransactionDto {
-
     private Double amount;
-    private String type;
     private String description;
     private LocalDate createdAtDate;
     private LocalTime createdAtTime;

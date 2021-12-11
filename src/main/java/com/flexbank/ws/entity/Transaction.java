@@ -7,14 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -36,8 +29,9 @@ public class Transaction {
     @Column(name = "amount")
     private Double amount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private String type;
+    private TransactionType type;
 
     @Column(name = "description")
     private String description;
@@ -48,6 +42,7 @@ public class Transaction {
     @Column(name = "created_at_time")
     private LocalTime createdAtTime;
 
+    @Column(name = "customer_id")
     private Integer customerId;
 
 }
