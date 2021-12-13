@@ -25,7 +25,7 @@ public class TransactionConverter {
         return transactionDto;
     }
 
-    public Transaction entityToDto(TransactionDto transactionDto){
+    public Transaction dtoToEntity(TransactionDto transactionDto){
         Transaction transaction = modelMapper.map(transactionDto, Transaction.class);
         return transaction;
     }

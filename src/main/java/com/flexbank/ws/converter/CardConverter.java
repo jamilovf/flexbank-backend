@@ -39,7 +39,7 @@ public class CardConverter {
         return cardDto;
     }
 
-    public Card entityToDto(CardDto cardDto){
+    public Card dtoToEntity(CardDto cardDto){
         Card card = modelMapper.map(cardDto, Card.class);
         return card;
     }

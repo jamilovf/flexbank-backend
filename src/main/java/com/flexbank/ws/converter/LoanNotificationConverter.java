@@ -25,7 +25,7 @@ public class LoanNotificationConverter {
         return loanNotificationDto;
     }
 
-    public LoanNotification entityToDto(LoanNotificationDto loanNotificationDto){
+    public LoanNotification dtoToEntity(LoanNotificationDto loanNotificationDto){
         LoanNotification loanNotification = modelMapper.map(loanNotificationDto, LoanNotification.class);
         return loanNotification;
     }
