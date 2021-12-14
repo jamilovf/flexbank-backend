@@ -7,5 +7,5 @@ public interface CustomerPhoneNumberService {
 
     CustomerPhoneNumberDto findByPhoneNumber(String phoneNumber);
 
-    CustomerPhoneNumberDto verifySmsCode(SmsCodeRequest smsCodeRequest);
+    CustomerPhoneNumberDto verifySmsCode(String phoneNumber, String smsCode);
 }

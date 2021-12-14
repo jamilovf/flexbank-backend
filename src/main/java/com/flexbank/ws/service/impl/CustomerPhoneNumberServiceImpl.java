@@ -46,12 +46,12 @@ public class CustomerPhoneNumberServiceImpl implements CustomerPhoneNumberServic
     }
 
     @Override
-    public CustomerPhoneNumberDto verifySmsCode(SmsCodeRequest smsCodeRequest) {
+    public CustomerPhoneNumberDto verifySmsCode(String phoneNumber, String smsCode) {
 
         CustomerPhoneNumber customerPhoneNumber =
-                customerPhoneNumberRepository.findByPhoneNumber(smsCodeRequest.getPhoneNumber());
+                customerPhoneNumberRepository.findByPhoneNumber(phoneNumber);
 
-        if(!customerPhoneNumber.getMessageCode().equals(smsCodeRequest.getSmsCode())){
+        if(!customerPhoneNumber.getMessageCode().equals(smsCode)){
             throw new RuntimeException("Wrong message code!");
         }
 
