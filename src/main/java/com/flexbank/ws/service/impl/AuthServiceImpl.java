@@ -6,14 +6,18 @@ import com.flexbank.ws.converter.CustomerConverter;
 import com.flexbank.ws.dto.CustomerDto;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.entity.Customer;
+import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.AuthService;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
 import com.flexbank.ws.service.inter.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -21,6 +25,7 @@ public class AuthServiceImpl implements AuthService {
     private final CustomerPhoneNumberService customerPhoneNumberService;
     private final SmsSender smsSender;
     private final CustomerService customerService;
+    private final CustomerRepository customerRepository;
     private final CustomerConverter customerConverter;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -28,11 +33,13 @@ public class AuthServiceImpl implements AuthService {
     public AuthServiceImpl(CustomerPhoneNumberService customerPhoneNumberService,
                            SmsSender smsSender,
                            CustomerService customerService,
+                           CustomerRepository customerRepository,
                            CustomerConverter customerConverter,
                            BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.customerPhoneNumberService = customerPhoneNumberService;
         this.smsSender = smsSender;
         this.customerService = customerService;
+        this.customerRepository = customerRepository;
         this.customerConverter = customerConverter;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -72,7 +79,23 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public Customer getCustomer(String email) {
+        Customer customer = customerRepository.findByEmail(email);
+
+        if (customer == null)
+            throw new UsernameNotFoundException(email);
+
+        return customer;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return null;
+        Customer customer = customerRepository.findByEmail(email);
+
+        if(customer == null){
+            throw new UsernameNotFoundException(email);
+        }
+
+        return new User(customer.getEmail(), customer.getPassword(), new ArrayList<>());
     }
 }

@@ -22,10 +22,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/api/auth/verifyPhoneNumber",
-                        "/api/auth/verifySmsCode")
+                .antMatchers(SecurityConstants.VERIFY_PHONE_NUMBER_URL,
+                        SecurityConstants.VERIFY_SMS_CODE_URL,
+                        SecurityConstants.SIGNUP_URL)
                 .permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated().and()
+                .addFilter(getAuthenticationFilter());
     }
 
     @Override
@@ -41,5 +43,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(authService).passwordEncoder(bCryptPasswordEncoder);
+    }
+
+    protected AuthenticationFilter getAuthenticationFilter() throws Exception {
+        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+        filter.setFilterProcessesUrl(SecurityConstants.SIGNIN_URL);
+        return filter;
     }
 }
