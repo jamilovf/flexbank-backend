@@ -2,7 +2,9 @@ package com.flexbank.ws.controller;
 
 import com.flexbank.ws.configuration.sms.SmsRequest;
 import com.flexbank.ws.configuration.sms.SmsSender;
+import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.dto.request.PhoneNumberRequest;
+import com.flexbank.ws.dto.request.SmsCodeRequest;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +31,23 @@ public class AuthController {
     public ResponseEntity<?> verifyPhoneNumber(
             @RequestBody PhoneNumberRequest phoneNumberRequest){
 
-        customerPhoneNumberService.findByPhoneNumber(phoneNumberRequest.getPhoneNumber());
+        CustomerPhoneNumberDto customerPhoneNumberDto =
+                customerPhoneNumberService.findByPhoneNumber(phoneNumberRequest.getPhoneNumber());
 
         SmsRequest smsRequest = new SmsRequest(phoneNumberRequest.getPhoneNumber() ,
                 "Welcome to FlexBank!\n Your verification code: ");
         smsSender.sendSms(smsRequest);
 
-        return ResponseEntity.ok("Successful verification!");
+        return ResponseEntity.ok(customerPhoneNumberDto);
+    }
+
+    @PostMapping("/verifySmsCode")
+    public ResponseEntity<?> verifySmsCode(
+            @RequestBody SmsCodeRequest smsCodeRequest){
+
+        CustomerPhoneNumberDto customerPhoneNumberDto =
+                customerPhoneNumberService.verifySmsCode(smsCodeRequest);
+
+        return ResponseEntity.ok(customerPhoneNumberDto);
     }
 }

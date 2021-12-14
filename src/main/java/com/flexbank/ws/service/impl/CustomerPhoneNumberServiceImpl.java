@@ -2,6 +2,7 @@ package com.flexbank.ws.service.impl;
 
 import com.flexbank.ws.converter.CustomerPhoneNumberConverter;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
+import com.flexbank.ws.dto.request.SmsCodeRequest;
 import com.flexbank.ws.entity.CustomerPhoneNumber;
 import com.flexbank.ws.repository.CustomerPhoneNumberRepository;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
@@ -42,5 +43,21 @@ public class CustomerPhoneNumberServiceImpl implements CustomerPhoneNumberServic
                customerPhoneNumberConverter.entityToDto(customerPhoneNumber);
 
        return customerPhoneNumberDto;
+    }
+
+    @Override
+    public CustomerPhoneNumberDto verifySmsCode(SmsCodeRequest smsCodeRequest) {
+
+        CustomerPhoneNumber customerPhoneNumber =
+                customerPhoneNumberRepository.findByPhoneNumber(smsCodeRequest.getPhoneNumber());
+
+        if(!customerPhoneNumber.getMessageCode().equals(smsCodeRequest.getSmsCode())){
+            throw new RuntimeException("Wrong message code!");
+        }
+
+        CustomerPhoneNumberDto customerPhoneNumberDto =
+                customerPhoneNumberConverter.entityToDto(customerPhoneNumber);
+
+        return customerPhoneNumberDto;
     }
 }
