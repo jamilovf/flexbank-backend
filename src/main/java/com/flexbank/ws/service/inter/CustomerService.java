@@ -5,7 +5,7 @@ import com.flexbank.ws.entity.Customer;
 
 public interface CustomerService {
 
-    CustomerDto findByEmail(String email);
+    void findByEmail(String email);
 
     void save(Customer customer);
 }

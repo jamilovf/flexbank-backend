@@ -24,15 +24,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto findByEmail(String email) {
+    public void findByEmail(String email) {
 
         Customer customer = customerRepository.findByEmail(email);
         if (customer != null){
             throw new RuntimeException("Email already is registered!");
         }
-        CustomerDto customerDto = customerConverter.entityToDto(customer);
 
-        return customerDto;
     }
 
     @Override

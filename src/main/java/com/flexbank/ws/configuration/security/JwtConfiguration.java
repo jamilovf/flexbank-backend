@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties("jwt")
+@ConfigurationProperties(prefix = "jwt")
 @Data
 @NoArgsConstructor
 public class JwtConfiguration {

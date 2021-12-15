@@ -1,5 +1,7 @@
 package com.flexbank.ws.configuration.security;
 
+import com.flexbank.ws.configuration.context.SpringApplicationContext;
+
 public class SecurityConstants {
     public static final long EXPIRATION_TIME = 86400000; // 1 day
     public static final String TOKEN_PREFIX = "Bearer ";
@@ -10,7 +12,8 @@ public class SecurityConstants {
     public static final String SIGNIN_URL = "/api/auth/signin";
 
     public static String getTokenSecret(){
-        JwtConfiguration jwtConfiguration = new JwtConfiguration();
+        JwtConfiguration jwtConfiguration =
+                (JwtConfiguration) SpringApplicationContext.getBean("jwtConfiguration");
         return jwtConfiguration.getTokenSecret();
     }
 }
