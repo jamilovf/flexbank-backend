@@ -47,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> verifySmsCode(@RequestBody CustomerDto customerDto){
+    public ResponseEntity<?> signup(@RequestBody CustomerDto customerDto){
 
         authService.signup(customerDto);
 
