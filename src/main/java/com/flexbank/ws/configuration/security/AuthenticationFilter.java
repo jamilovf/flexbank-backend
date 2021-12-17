@@ -6,7 +6,6 @@ import com.flexbank.ws.entity.Customer;
 import com.flexbank.ws.service.inter.AuthService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,7 +25,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final AuthService authService;
 
-    @Autowired
     public AuthenticationFilter(AuthenticationManager authenticationManager,
                                 AuthService authService) {
         this.authenticationManager = authenticationManager;

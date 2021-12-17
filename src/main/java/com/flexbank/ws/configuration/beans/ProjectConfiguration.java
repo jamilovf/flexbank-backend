@@ -1,6 +1,5 @@
 package com.flexbank.ws.configuration.beans;
 
-import com.flexbank.ws.configuration.context.SpringApplicationContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +33,4 @@ public class ProjectConfiguration {
                 .build();
     }
 
-    @Bean
-    public SpringApplicationContext springApplicationContext() {
-        return new SpringApplicationContext();
-    }
 }
