@@ -50,7 +50,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     protected AuthenticationFilter getAuthenticationFilter() throws Exception {
-        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager(), authService);
         filter.setFilterProcessesUrl(SecurityConstants.SIGNIN_URL);
         return filter;
     }

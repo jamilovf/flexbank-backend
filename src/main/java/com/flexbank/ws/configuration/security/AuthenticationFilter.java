@@ -1,12 +1,12 @@
 package com.flexbank.ws.configuration.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flexbank.ws.configuration.context.SpringApplicationContext;
 import com.flexbank.ws.dto.request.LoginRequest;
 import com.flexbank.ws.entity.Customer;
 import com.flexbank.ws.service.inter.AuthService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,9 +24,13 @@ import java.util.Date;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
+    private final AuthService authService;
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager) {
+    @Autowired
+    public AuthenticationFilter(AuthenticationManager authenticationManager,
+                                AuthService authService) {
         this.authenticationManager = authenticationManager;
+        this.authService = authService;
     }
 
     @Override
@@ -57,19 +61,19 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication auth)
             throws IOException, ServletException {
 
-        String userName = ((User) auth.getPrincipal()).getUsername();
+        User springUser = (User) auth.getPrincipal();
+        Customer customer = authService.getCustomer(springUser.getUsername());
+        Integer id = customer.getId();
+
+        MyTokenUser tokenUser = new MyTokenUser(springUser.getUsername(), id);
 
         String token = Jwts.builder()
-                .setSubject(userName)
+                .setSubject(tokenUser.toString())
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
                 .compact();
-        AuthService authService =
-                (AuthService) SpringApplicationContext.getBean("authServiceImpl");
-        Customer customer = authService.getCustomer(userName);
 
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-        res.addHeader("CustomerID", customer.getId().toString());
 
     }
 }

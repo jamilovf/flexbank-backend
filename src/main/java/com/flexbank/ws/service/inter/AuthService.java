@@ -10,5 +10,5 @@ public interface AuthService extends UserDetailsService {
     CustomerPhoneNumberDto verifyPhoneNumber(String phoneNumber);
     CustomerPhoneNumberDto verifySmsCode(String phoneNumber, String smsCode);
     void signup(CustomerDto customerDto);
-    Customer getCustomer(String userName);
+    Customer getCustomer(String email);
 }
