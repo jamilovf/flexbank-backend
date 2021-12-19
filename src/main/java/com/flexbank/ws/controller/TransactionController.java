@@ -1,13 +1,12 @@
 package com.flexbank.ws.controller;
 
 import com.flexbank.ws.dto.TransactionDto;
+import com.flexbank.ws.dto.request.InternalTransferRequest;
 import com.flexbank.ws.service.inter.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +30,12 @@ public class TransactionController {
         return ResponseEntity.ok(transactionDtos);
     }
 
+    @PostMapping("/transferInternal")
+    public ResponseEntity<?> transferInternal(InternalTransferRequest internalTransferRequest){
+
+        transactionService.transferInternal(internalTransferRequest);
+
+        return ResponseEntity.ok("Successful transfer!");
+    }
 
 }

@@ -59,14 +59,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication auth)
             throws IOException, ServletException {
 
-        User springUser = (User) auth.getPrincipal();
-        Customer customer = authService.getCustomer(springUser.getUsername());
+        User user = (User) auth.getPrincipal();
+        Customer customer = authService.getCustomer(user.getUsername());
         Integer id = customer.getId();
 
-        MyTokenUser tokenUser = new MyTokenUser(springUser.getUsername(), id);
-
         String token = Jwts.builder()
-                .setSubject(tokenUser.toString())
+                .setSubject(id.toString())
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
                 .compact();

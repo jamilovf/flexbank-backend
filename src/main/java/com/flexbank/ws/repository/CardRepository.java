@@ -8,4 +8,5 @@ import java.util.List;
 public interface CardRepository extends JpaRepository<Card, Integer> {
 
     List<Card> findAllByCustomerId(Integer customerId);
+    Card findByCardNumber(String cardNumber);
 }
