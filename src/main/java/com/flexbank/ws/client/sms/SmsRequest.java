@@ -1,4 +1,4 @@
-package com.flexbank.ws.configuration.sms;
+package com.flexbank.ws.client.sms;
 
 import lombok.Data;
 

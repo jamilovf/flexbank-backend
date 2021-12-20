@@ -1,7 +1,7 @@
 package com.flexbank.ws.service.impl;
 
-import com.flexbank.ws.configuration.sms.SmsRequest;
-import com.flexbank.ws.configuration.sms.SmsSender;
+import com.flexbank.ws.client.sms.SmsRequest;
+import com.flexbank.ws.client.sms.SmsSender;
 import com.flexbank.ws.converter.CustomerConverter;
 import com.flexbank.ws.dto.CustomerDto;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;

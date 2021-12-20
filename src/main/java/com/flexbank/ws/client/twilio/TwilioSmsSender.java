@@ -1,7 +1,8 @@
-package com.flexbank.ws.configuration.twilio;
+package com.flexbank.ws.client.twilio;
 
-import com.flexbank.ws.configuration.sms.SmsRequest;
-import com.flexbank.ws.configuration.sms.SmsSender;
+import com.flexbank.ws.client.sms.SmsRequest;
+import com.flexbank.ws.client.sms.SmsSender;
+import com.flexbank.ws.configuration.twilio.TwilioConfiguration;
 import com.flexbank.ws.entity.CustomerPhoneNumber;
 import com.flexbank.ws.repository.CustomerPhoneNumberRepository;
 import com.twilio.rest.api.v2010.account.Message;

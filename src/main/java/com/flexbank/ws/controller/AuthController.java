@@ -1,13 +1,10 @@
 package com.flexbank.ws.controller;
 
-import com.flexbank.ws.configuration.sms.SmsRequest;
-import com.flexbank.ws.configuration.sms.SmsSender;
 import com.flexbank.ws.dto.CustomerDto;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.dto.request.PhoneNumberRequest;
 import com.flexbank.ws.dto.request.SmsCodeRequest;
 import com.flexbank.ws.service.inter.AuthService;
-import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
