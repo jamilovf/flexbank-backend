@@ -1,6 +1,7 @@
 package com.flexbank.ws.controller;
 
 import com.flexbank.ws.dto.TransactionDto;
+import com.flexbank.ws.dto.request.ExternalTransferRequest;
 import com.flexbank.ws.dto.request.InternalTransferRequest;
 import com.flexbank.ws.service.inter.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,15 @@ public class TransactionController {
         transactionService.transferInternal(internalTransferRequest);
 
         return ResponseEntity.ok("Successful transfer!");
+    }
+
+    @PostMapping("/transferExternal")
+    public ResponseEntity<?> transferInternal(
+            @RequestBody ExternalTransferRequest externalTransferRequest){
+
+        transactionService.transferExternal(externalTransferRequest);
+
+        return ResponseEntity.ok("Operation has been successfully completed!");
     }
 
 }
