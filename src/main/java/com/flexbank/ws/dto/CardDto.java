@@ -15,4 +15,6 @@ public class CardDto {
     private String expiryDate;
     private Double balance;
     private String customerName;
+    private Boolean isBlocked;
+    private Boolean isExpired;
 }

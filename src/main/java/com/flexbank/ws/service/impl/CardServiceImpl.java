@@ -47,4 +47,22 @@ public class CardServiceImpl implements CardService {
 
         return cardDtos;
     }
+
+    @Override
+    public void blockCard(Integer id) {
+
+        Optional<Card> cardOptional = cardRepository.findById(id);
+
+        cardOptional.ifPresent(card -> {
+           if(card.getIsExpired()){
+               throw new RuntimeException("Expired card cannot be blocked!");
+           }
+           if(card.getIsBlocked()){
+               throw new RuntimeException("Card is already blocked!");
+           }
+
+           card.setIsBlocked(true);
+           cardRepository.save(card);
+        });
+    }
 }

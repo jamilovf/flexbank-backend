@@ -4,10 +4,7 @@ import com.flexbank.ws.dto.CardDto;
 import com.flexbank.ws.service.inter.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,4 +28,11 @@ public class CardController {
         return ResponseEntity.ok(cardDtos);
     }
 
+    @PutMapping("/block/{id}")
+    public ResponseEntity<?> blockCard(@PathVariable Integer id){
+
+        cardService.blockCard(id);
+
+        return ResponseEntity.ok("Card is blocked!");
+    }
 }
