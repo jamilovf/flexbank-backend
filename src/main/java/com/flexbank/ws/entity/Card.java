@@ -44,4 +44,9 @@ public class Card {
     @Column(name = "customer_id")
     private Integer customerId;
 
+    @Column(name = "is_blocked")
+    private Boolean isBlocked;
+
+    @Column(name = "is_expired")
+    private Boolean isExpired;
 }
