@@ -1,9 +1,6 @@
 package com.flexbank.ws.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +21,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Builder
 @Entity
 @Table(name = "customers")
 public class Customer {
@@ -59,20 +57,5 @@ public class Customer {
 
     @Column(name = "phone_number")
     private String phoneNumber;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private List<Card> cardList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private List<CardOrder> cardOrderList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private List<LoanNotification> loanNotificationList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private List<LoanRequest> loanRequestList;
-
-    @OneToMany(mappedBy = "customerId")
-    private List<Transaction> transactionList;
 
 }

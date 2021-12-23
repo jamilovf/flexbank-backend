@@ -1,6 +1,7 @@
 package com.flexbank.ws.service.impl;
 
 import com.flexbank.ws.converter.CustomerConverter;
+import com.flexbank.ws.dto.request.UpdateCustomerRequest;
 import com.flexbank.ws.entity.Customer;
 import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.CustomerService;
@@ -32,6 +33,22 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void save(Customer customer) {
+        customerRepository.save(customer);
+    }
+
+    @Override
+    public void updateAccount(Integer customerId, UpdateCustomerRequest updateCustomerRequest) {
+
+        Customer customer = customerRepository.findById(customerId).get();
+
+        customer.setFirstName(updateCustomerRequest.getFirstName());
+        customer.setLastName(updateCustomerRequest.getLastName());
+        customer.setAddress(updateCustomerRequest.getAddress());
+        customer.setBirthDate(updateCustomerRequest.getBirthDate());
+        customer.setCity(updateCustomerRequest.getCity());
+        customer.setPhoneNumber(updateCustomerRequest.getPhoneNumber());
+        customer.setZip(updateCustomerRequest.getZip());
+
         customerRepository.save(customer);
     }
 }
