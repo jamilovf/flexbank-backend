@@ -32,4 +32,15 @@ public class LoanRequestController {
 
         return ResponseEntity.ok("Your request has been considered!");
     }
+
+    @PostMapping("/requestCarLoan")
+    public ResponseEntity<?> requestCarLoan(Authentication authentication,
+                                                 @RequestBody LoanRequestDto loanRequestDto){
+
+        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
+
+        loanRequestService.requestCarLoan(customerId, loanRequestDto);
+
+        return ResponseEntity.ok("Your request has been considered!");
+    }
 }

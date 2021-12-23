@@ -33,4 +33,16 @@ public class LoanRequestServiceImpl implements LoanRequestService {
 
         loanRequestRepository.save(loanRequest);
     }
+
+    @Override
+    public void requestCarLoan(Integer customerId, LoanRequestDto loanRequestDto) {
+
+        loanRequestDto.setType(LoanRequestType.CAR_LOAN);
+
+        LoanRequest loanRequest = loanRequestConverter.dtoToEntity(loanRequestDto);
+
+        loanRequest.setCustomerId(customerId);
+
+        loanRequestRepository.save(loanRequest);
+    }
 }
