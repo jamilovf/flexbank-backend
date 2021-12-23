@@ -5,14 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -31,8 +24,9 @@ public class LoanRequest {
     @Column(name = "id")
     private Integer id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private String type;
+    private LoanRequestType type;
 
     @Column(name = "amount")
     private Double amount;
@@ -40,8 +34,7 @@ public class LoanRequest {
     @Column(name = "period")
     private int period;
 
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Customer customerId;
+    @Column(name = "customer_id")
+    private Integer customerId;
 
 }
