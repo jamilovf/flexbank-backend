@@ -53,6 +53,8 @@ public class AuthServiceImpl implements AuthService {
                 "Welcome to FlexBank!\n Your verification code: ");
         smsSender.sendSms(smsRequest);
 
+        customerPhoneNumberDto = customerPhoneNumberService.findByPhoneNumber(phoneNumber);
+
         return customerPhoneNumberDto;
     }
 

@@ -32,4 +32,11 @@ public class CustomerPhoneNumber {
 
     @Column(name = "message_code")
     private String messageCode;
+
+    @Column(name = "is_message_code_allowed")
+    private boolean isMessageCodeAllowed;
+
+    @Column(name = "is_signup_allowed")
+    private boolean isSignupAllowed;
+
 }

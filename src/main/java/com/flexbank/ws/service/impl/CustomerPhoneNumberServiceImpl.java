@@ -55,6 +55,9 @@ public class CustomerPhoneNumberServiceImpl implements CustomerPhoneNumberServic
             throw new RuntimeException("Wrong message code!");
         }
 
+        customerPhoneNumber.setSignupAllowed(true);
+        customerPhoneNumberRepository.save(customerPhoneNumber);
+
         CustomerPhoneNumberDto customerPhoneNumberDto =
                 customerPhoneNumberConverter.entityToDto(customerPhoneNumber);
 

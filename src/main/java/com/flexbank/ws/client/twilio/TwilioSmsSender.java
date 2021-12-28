@@ -42,6 +42,8 @@ public class TwilioSmsSender implements SmsSender {
                 customerPhoneNumberRepository.findByPhoneNumber(smsRequest.getPhoneNumber());
 
         customerPhoneNumber.setMessageCode(messageCode);
+        customerPhoneNumber.setMessageCodeAllowed(true);
+
         customerPhoneNumberRepository.save(customerPhoneNumber);
 
         MessageCreator messageCreator = Message.creator(to, from, message);

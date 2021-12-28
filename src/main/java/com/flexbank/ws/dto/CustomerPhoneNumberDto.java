@@ -15,5 +15,7 @@ public class CustomerPhoneNumberDto {
     private String phoneNumber;
     private boolean isRegistered;
     private String messageCode;
+    private boolean isMessageCodeAllowed;
+    private boolean isSignupAllowed;
 
 }
