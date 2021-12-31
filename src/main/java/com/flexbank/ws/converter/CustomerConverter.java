@@ -1,5 +1,6 @@
 package com.flexbank.ws.converter;
 
+import com.flexbank.ws.dto.CustomerDetailsDto;
 import com.flexbank.ws.dto.CustomerDto;
 import com.flexbank.ws.entity.Customer;
 import lombok.Data;
@@ -25,9 +26,21 @@ public class CustomerConverter {
         return customerDto;
     }
 
+    public CustomerDetailsDto entityToDetailsDto(Customer customer){
+        CustomerDetailsDto customerDetailsDto =
+                modelMapper.map(customer, CustomerDetailsDto.class);
+        return customerDetailsDto;
+    }
+
     public Customer dtoToEntity(CustomerDto customerDto){
         Customer customer =
                 modelMapper.map(customerDto, Customer.class);
+        return customer;
+    }
+
+    public Customer detailsDtoToEntity(CustomerDetailsDto customerDetailsDto){
+        Customer customer =
+                modelMapper.map(customerDetailsDto, Customer.class);
         return customer;
     }
 }

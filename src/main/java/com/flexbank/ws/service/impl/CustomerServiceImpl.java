@@ -1,6 +1,7 @@
 package com.flexbank.ws.service.impl;
 
 import com.flexbank.ws.converter.CustomerConverter;
+import com.flexbank.ws.dto.CustomerDetailsDto;
 import com.flexbank.ws.dto.request.UpdateCustomerRequest;
 import com.flexbank.ws.entity.Customer;
 import com.flexbank.ws.exception.BadRequestException;
@@ -52,5 +53,15 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setZip(updateCustomerRequest.getZip());
 
         customerRepository.save(customer);
+    }
+
+    @Override
+    public CustomerDetailsDto getAccountDetails(Integer customerId) {
+
+        Customer customer = customerRepository.findById(customerId).get();
+
+        CustomerDetailsDto customerDetailsDto = customerConverter.entityToDetailsDto(customer);
+
+        return customerDetailsDto;
     }
 }
