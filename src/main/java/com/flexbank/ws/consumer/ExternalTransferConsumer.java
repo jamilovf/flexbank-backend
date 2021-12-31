@@ -5,6 +5,9 @@ import com.flexbank.ws.client.ibanapi.IbanApiModel;
 import com.flexbank.ws.configuration.rabbitmq.RabbitMqConfiguration;
 import com.flexbank.ws.dto.request.ExternalTransferRequest;
 import com.flexbank.ws.entity.Card;
+import com.flexbank.ws.exception.BadRequestException;
+import com.flexbank.ws.exception.ErrorMessage;
+import com.flexbank.ws.exception.NotFoundException;
 import com.flexbank.ws.repository.CardRepository;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -35,17 +38,17 @@ public class ExternalTransferConsumer {
     }
 
     @RabbitListener(queues = "${rabbitmq.external_transfer_queue}")
-    public void validateExternalTransferMessage(ExternalTransferRequest externalTransferRequest){
+    public void validateExternalTransferMessage(ExternalTransferRequest externalTransferRequest) throws Exception {
 
         IbanApiModel ibanApiModel =
                 ibanApiClient.validateIban(externalTransferRequest.getIban());
 
         if(ibanApiModel.getResult().equals("400")){
-            throw new RuntimeException("Invalid IBAN!");
+            throw new BadRequestException(ErrorMessage.INVALID_IBAN.getErrorMessage());
         }
 
         if(!externalTransferRequest.getSwiftCode().equals(ibanApiModel.getSwiftCode())){
-            throw new RuntimeException("Invalid Swift code!");
+            throw new BadRequestException(ErrorMessage.INVALID_SWIFT.getErrorMessage());
         }
 
         Card senderCard = cardRepository
@@ -54,7 +57,7 @@ public class ExternalTransferConsumer {
         Double amount = externalTransferRequest.getAmount();
 
         if(senderCard.getBalance() < amount){
-            throw new RuntimeException("Insufficient balance!");
+            throw new NotFoundException(ErrorMessage.INSUFFICIENT_BALANCE.getErrorMessage());
         }
 
         rabbitTemplate.convertAndSend(exchange.getName(),

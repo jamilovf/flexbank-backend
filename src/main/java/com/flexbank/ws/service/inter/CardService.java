@@ -8,5 +8,5 @@ public interface CardService {
 
     List<CardDto> findAllByCustomerId(Integer customerId);
 
-    void blockCard(Integer id);
+    void blockCard(Integer id) throws Exception;
 }

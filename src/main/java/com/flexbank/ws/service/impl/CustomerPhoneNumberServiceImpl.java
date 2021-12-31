@@ -4,6 +4,8 @@ import com.flexbank.ws.converter.CustomerPhoneNumberConverter;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.dto.request.SmsCodeRequest;
 import com.flexbank.ws.entity.CustomerPhoneNumber;
+import com.flexbank.ws.exception.BadRequestException;
+import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.repository.CustomerPhoneNumberRepository;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +28,17 @@ public class CustomerPhoneNumberServiceImpl implements CustomerPhoneNumberServic
     }
 
     @Override
-    public CustomerPhoneNumberDto findByPhoneNumber(String phoneNumber) {
+    public CustomerPhoneNumberDto findByPhoneNumber(String phoneNumber) throws Exception {
 
        CustomerPhoneNumber customerPhoneNumber =
                customerPhoneNumberRepository.findByPhoneNumber(phoneNumber);
 
        if(customerPhoneNumber == null){
-           throw new RuntimeException("No customer with this phone number!");
+           throw new BadRequestException(ErrorMessage.WRONG_PHONE_NUMBER.getErrorMessage());
        }
 
        if(customerPhoneNumber.isRegistered()){
-            throw new RuntimeException("Customer is already registered!");
+            throw new BadRequestException(ErrorMessage.CUSTOMER_ALREADY_REGISTERED.getErrorMessage());
        }
 
        CustomerPhoneNumberDto customerPhoneNumberDto =
@@ -46,13 +48,13 @@ public class CustomerPhoneNumberServiceImpl implements CustomerPhoneNumberServic
     }
 
     @Override
-    public CustomerPhoneNumberDto verifySmsCode(String phoneNumber, String smsCode) {
+    public CustomerPhoneNumberDto verifySmsCode(String phoneNumber, String smsCode) throws Exception {
 
         CustomerPhoneNumber customerPhoneNumber =
                 customerPhoneNumberRepository.findByPhoneNumber(phoneNumber);
 
         if(!customerPhoneNumber.getMessageCode().equals(smsCode)){
-            throw new RuntimeException("Wrong message code!");
+            throw new BadRequestException(ErrorMessage.WRONG_MESSAGE_CODE.getErrorMessage());
         }
 
         customerPhoneNumber.setSignupAllowed(true);

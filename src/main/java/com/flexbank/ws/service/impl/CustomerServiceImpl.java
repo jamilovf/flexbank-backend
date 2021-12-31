@@ -3,6 +3,8 @@ package com.flexbank.ws.service.impl;
 import com.flexbank.ws.converter.CustomerConverter;
 import com.flexbank.ws.dto.request.UpdateCustomerRequest;
 import com.flexbank.ws.entity.Customer;
+import com.flexbank.ws.exception.BadRequestException;
+import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.CustomerService;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void findByEmail(String email) {
+    public void findByEmail(String email) throws Exception {
 
         Customer customer = customerRepository.findByEmail(email);
         if (customer != null){
-            throw new RuntimeException("Email already is registered!");
+            throw new BadRequestException(ErrorMessage.EMAIL_ALREADY_REGISTERED.getErrorMessage());
         }
 
     }

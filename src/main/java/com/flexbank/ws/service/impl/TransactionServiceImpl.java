@@ -10,6 +10,8 @@ import com.flexbank.ws.entity.Card;
 import com.flexbank.ws.entity.Customer;
 import com.flexbank.ws.entity.Transaction;
 import com.flexbank.ws.entity.TransactionType;
+import com.flexbank.ws.exception.ErrorMessage;
+import com.flexbank.ws.exception.NotFoundException;
 import com.flexbank.ws.repository.CardRepository;
 import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.repository.TransactionRepository;
@@ -71,7 +73,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public void transferInternal(InternalTransferRequest internalTransferRequest) {
+    public void transferInternal(InternalTransferRequest internalTransferRequest)
+            throws Exception{
 
         Card senderCard = cardRepository
                 .findByCardNumber(internalTransferRequest.getChosenCard());
@@ -79,7 +82,7 @@ public class TransactionServiceImpl implements TransactionService {
                 .findByCardNumber(internalTransferRequest.getRecipientCardNumber());
 
         if(recipientCard == null){
-            throw new RuntimeException("There is no card with this number!");
+            throw new NotFoundException(ErrorMessage.WRONG_CARD_NUMBER.getErrorMessage());
         }
 
         Customer recipientCustomer = customerRepository
@@ -87,13 +90,13 @@ public class TransactionServiceImpl implements TransactionService {
 
         if(!internalTransferRequest.getFirstName().equals(recipientCustomer.getFirstName()) ||
                 !internalTransferRequest.getLastName().equals(recipientCustomer.getLastName())){
-            throw new RuntimeException("Recipient first or last name is wrong!");
+            throw new NotFoundException(ErrorMessage.RECIPIENT_NAME_ERROR.getErrorMessage());
         }
 
         Double amount = internalTransferRequest.getAmount();
 
         if(senderCard.getBalance() < amount){
-            throw new RuntimeException("Insufficient balance!");
+            throw new Exception(ErrorMessage.INSUFFICIENT_BALANCE.getErrorMessage());
         }
 
         senderCard.setBalance(senderCard.getBalance() - amount);

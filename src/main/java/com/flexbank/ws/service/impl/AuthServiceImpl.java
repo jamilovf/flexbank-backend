@@ -6,6 +6,8 @@ import com.flexbank.ws.converter.CustomerConverter;
 import com.flexbank.ws.dto.CustomerDto;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.entity.Customer;
+import com.flexbank.ws.exception.BadRequestException;
+import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.AuthService;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
@@ -45,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public CustomerPhoneNumberDto verifyPhoneNumber(String phoneNumber) {
+    public CustomerPhoneNumberDto verifyPhoneNumber(String phoneNumber) throws Exception {
         CustomerPhoneNumberDto customerPhoneNumberDto =
                 customerPhoneNumberService.findByPhoneNumber(phoneNumber);
 
@@ -59,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public CustomerPhoneNumberDto verifySmsCode(String phoneNumber, String smsCode) {
+    public CustomerPhoneNumberDto verifySmsCode(String phoneNumber, String smsCode) throws Exception {
         CustomerPhoneNumberDto customerPhoneNumberDto =
                 customerPhoneNumberService.verifySmsCode(phoneNumber, smsCode);
 
@@ -67,11 +69,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void signup(CustomerDto customerDto) {
+    public void signup(CustomerDto customerDto) throws Exception {
        customerService.findByEmail(customerDto.getEmail());
 
        if (!customerDto.getPassword().equals(customerDto.getPasswordConfirmation())){
-           throw new RuntimeException("Passwords must be equal!");
+           throw new BadRequestException(ErrorMessage.PASSWORDS_MUST_EQUAL.getErrorMessage());
        }
 
        Customer customer = customerConverter.dtoToEntity(customerDto);

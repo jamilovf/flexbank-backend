@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/verifyPhoneNumber")
     public ResponseEntity<?> verifyPhoneNumber(
-            @RequestBody PhoneNumberRequest phoneNumberRequest){
+            @RequestBody PhoneNumberRequest phoneNumberRequest) throws Exception {
 
         CustomerPhoneNumberDto customerPhoneNumberDto =
                 authService.verifyPhoneNumber(phoneNumberRequest.getPhoneNumber());
@@ -34,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/verifySmsCode")
-    public ResponseEntity<?> verifySmsCode(@RequestBody SmsCodeRequest smsCodeRequest){
+    public ResponseEntity<?> verifySmsCode(@RequestBody SmsCodeRequest smsCodeRequest) throws Exception {
 
         CustomerPhoneNumberDto customerPhoneNumberDto =
                 authService.verifySmsCode(smsCodeRequest.getPhoneNumber(),
@@ -44,7 +44,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody CustomerDto customerDto){
+    public ResponseEntity<?> signup(@RequestBody CustomerDto customerDto) throws Exception {
 
         authService.signup(customerDto);
 

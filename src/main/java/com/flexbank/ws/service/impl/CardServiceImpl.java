@@ -4,6 +4,8 @@ import com.flexbank.ws.converter.CardConverter;
 import com.flexbank.ws.dto.CardDto;
 import com.flexbank.ws.entity.Card;
 import com.flexbank.ws.entity.Customer;
+import com.flexbank.ws.exception.BadRequestException;
+import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.repository.CardRepository;
 import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.CardService;
@@ -49,20 +51,18 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void blockCard(Integer id) {
+    public void blockCard(Integer id) throws Exception{
 
-        Optional<Card> cardOptional = cardRepository.findById(id);
+        Card card = cardRepository.findById(id).get();
 
-        cardOptional.ifPresent(card -> {
            if(card.getIsExpired()){
-               throw new RuntimeException("Expired card cannot be blocked!");
+               throw new BadRequestException(ErrorMessage.EXPIRED_CARD_BLOCK.getErrorMessage());
            }
            if(card.getIsBlocked()){
-               throw new RuntimeException("Card is already blocked!");
+               throw new BadRequestException(ErrorMessage.CARD_ALREADY_BLOCKED.getErrorMessage());
            }
 
            card.setIsBlocked(true);
            cardRepository.save(card);
-        });
     }
 }

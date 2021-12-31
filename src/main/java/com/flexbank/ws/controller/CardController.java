@@ -29,7 +29,7 @@ public class CardController {
     }
 
     @PutMapping("/block/{id}")
-    public ResponseEntity<?> blockCard(@PathVariable Integer id){
+    public ResponseEntity<?> blockCard(@PathVariable Integer id) throws Exception {
 
         cardService.blockCard(id);
 

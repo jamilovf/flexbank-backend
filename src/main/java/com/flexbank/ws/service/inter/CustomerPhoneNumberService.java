@@ -5,7 +5,7 @@ import com.flexbank.ws.dto.request.SmsCodeRequest;
 
 public interface CustomerPhoneNumberService {
 
-    CustomerPhoneNumberDto findByPhoneNumber(String phoneNumber);
+    CustomerPhoneNumberDto findByPhoneNumber(String phoneNumber) throws Exception;
 
-    CustomerPhoneNumberDto verifySmsCode(String phoneNumber, String smsCode);
+    CustomerPhoneNumberDto verifySmsCode(String phoneNumber, String smsCode) throws Exception;
 }

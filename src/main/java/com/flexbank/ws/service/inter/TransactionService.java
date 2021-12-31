@@ -10,7 +10,7 @@ public interface TransactionService {
 
     List<TransactionDto> findAllByCustomerId(Integer customerId);
 
-    void transferInternal(InternalTransferRequest internalTransferRequest);
+    void transferInternal(InternalTransferRequest internalTransferRequest) throws Exception;
 
     void transferExternal(ExternalTransferRequest externalTransferRequest);
 }

@@ -33,7 +33,7 @@ public class TransactionController {
 
     @PostMapping("/transferInternal")
     public ResponseEntity<?> transferInternal(
-            @RequestBody InternalTransferRequest internalTransferRequest){
+            @RequestBody InternalTransferRequest internalTransferRequest) throws Exception {
 
         transactionService.transferInternal(internalTransferRequest);
 
