@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class CustomerDetailsDto {
-    private Integer id;
     private String firstName;
     private String lastName;
     private String email;

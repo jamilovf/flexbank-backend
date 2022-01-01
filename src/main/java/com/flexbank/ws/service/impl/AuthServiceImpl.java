@@ -6,8 +6,10 @@ import com.flexbank.ws.converter.CustomerConverter;
 import com.flexbank.ws.dto.CustomerDto;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.entity.Customer;
+import com.flexbank.ws.entity.CustomerPhoneNumber;
 import com.flexbank.ws.exception.BadRequestException;
 import com.flexbank.ws.exception.ErrorMessage;
+import com.flexbank.ws.repository.CustomerPhoneNumberRepository;
 import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.AuthService;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 public class AuthServiceImpl implements AuthService {
 
     private final CustomerPhoneNumberService customerPhoneNumberService;
+    private final CustomerPhoneNumberRepository customerPhoneNumberRepository;
     private final SmsSender smsSender;
     private final CustomerService customerService;
     private final CustomerRepository customerRepository;
@@ -33,12 +36,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     public AuthServiceImpl(CustomerPhoneNumberService customerPhoneNumberService,
+                           CustomerPhoneNumberRepository customerPhoneNumberRepository,
                            SmsSender smsSender,
                            CustomerService customerService,
                            CustomerRepository customerRepository,
                            CustomerConverter customerConverter,
                            BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.customerPhoneNumberService = customerPhoneNumberService;
+        this.customerPhoneNumberRepository = customerPhoneNumberRepository;
         this.smsSender = smsSender;
         this.customerService = customerService;
         this.customerRepository = customerRepository;
@@ -78,7 +83,16 @@ public class AuthServiceImpl implements AuthService {
 
        Customer customer = customerConverter.dtoToEntity(customerDto);
        customer.setPassword(bCryptPasswordEncoder.encode(customerDto.getPassword()));
+       customer.setPhoneNumber(customerDto.getPhoneNumber());
 
+       CustomerPhoneNumber customerPhoneNumber=
+               customerPhoneNumberRepository.findByPhoneNumber(customerDto.getPhoneNumber());
+       customerPhoneNumber.setRegistered(true);
+       customerPhoneNumber.setMessageCode(null);
+       customerPhoneNumber.setMessageCodeAllowed(false);
+       customerPhoneNumber.setSignupAllowed(false);
+
+       customerPhoneNumberRepository.save(customerPhoneNumber);
        customerService.save(customer);
     }
 

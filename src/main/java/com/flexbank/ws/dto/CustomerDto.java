@@ -13,4 +13,5 @@ public class CustomerDto {
     private String email;
     private String password;
     private String passwordConfirmation;
+    private String phoneNumber;
 }
