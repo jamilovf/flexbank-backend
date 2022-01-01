@@ -1,5 +1,8 @@
 package com.flexbank.ws.configuration.security;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,23 +34,29 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(req,res);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request,
+                                                                  HttpServletResponse res) throws IOException {
         String token = request.getHeader(SecurityConstants.HEADER_STRING);
 
         if (token != null) {
 
             token = token.replace(SecurityConstants.TOKEN_PREFIX, "");
 
-            String user = Jwts.parser()
+            String user = null;
+            try {
+                user = Jwts.parser()
                     .setSigningKey( SecurityConstants.getTokenSecret())
                     .parseClaimsJws( token )
                     .getBody()
-                    .getSubject();
+                    .getSubject();}
+            catch (ExpiredJwtException ex){
+                res.setHeader("token", "expired");
+            }
 
             if (user != null) {
                 return new UsernamePasswordAuthenticationToken(user,
