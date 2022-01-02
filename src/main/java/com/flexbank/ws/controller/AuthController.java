@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -44,7 +46,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody CustomerDto customerDto) throws Exception {
+    public ResponseEntity<?> signup(@Valid @RequestBody CustomerDto customerDto) throws Exception {
 
         authService.signup(customerDto);
 
