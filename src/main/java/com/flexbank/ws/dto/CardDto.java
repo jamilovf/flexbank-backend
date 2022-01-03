@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class CardDto {
     private Integer id;
+    private String cardType;
     private String cardNumber;
     private String expiryDate;
     private Double balance;
