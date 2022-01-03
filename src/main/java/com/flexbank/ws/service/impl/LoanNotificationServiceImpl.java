@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-
 public class LoanNotificationServiceImpl implements LoanNotificationService {
 
     private final LoanNotificationRepository loanNotificationRepository;

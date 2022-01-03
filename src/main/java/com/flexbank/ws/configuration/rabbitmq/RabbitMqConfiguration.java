@@ -22,9 +22,11 @@ public class RabbitMqConfiguration {
     private String internalTransferQueue;
     private String externalTransferQueue;
     private String approvedExternalTransferQueue;
+    private String orderCardQueue;
     private String internalTransferRoutingKey;
     private String externalTransferRoutingKey;
     private String approvedExternalTransferRoutingKey;
+    private String orderCardRoutingKey;
 
     @Bean
     DirectExchange exchange() {
@@ -47,6 +49,11 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
+    Queue orderCardQueue() {
+        return new Queue(orderCardQueue, true);
+    }
+
+    @Bean
     Binding internalTransferBinding(Queue internalTransferQueue, DirectExchange exchange){
         return BindingBuilder.bind(internalTransferQueue)
                 .to(exchange).with(internalTransferRoutingKey);
@@ -64,6 +71,13 @@ public class RabbitMqConfiguration {
         return BindingBuilder.bind(approvedExternalTransferQueue)
                 .to(exchange).with(approvedExternalTransferRoutingKey);
     }
+
+    @Bean
+    Binding orderCardBinding(Queue orderCardQueue, DirectExchange exchange){
+        return BindingBuilder.bind(orderCardQueue)
+                .to(exchange).with(orderCardRoutingKey);
+    }
+
     @Bean
     public MessageConverter jsonMessageConverter(){
         return new Jackson2JsonMessageConverter();
