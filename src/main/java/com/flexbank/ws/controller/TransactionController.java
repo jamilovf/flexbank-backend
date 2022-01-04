@@ -23,10 +23,14 @@ public class TransactionController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAllByCustomerId(@RequestParam Integer customerId){
+    public ResponseEntity<?> findAllByCustomerId(Authentication authentication,
+                                                 @RequestParam(value = "page") int page,
+                                                 @RequestParam(value = "limit") int limit){
+
+        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
 
         List<TransactionDto> transactionDtos =
-                transactionService.findAllByCustomerId(customerId);
+                transactionService.findAllByCustomerId(customerId, page, limit);
 
         return ResponseEntity.ok(transactionDtos);
     }

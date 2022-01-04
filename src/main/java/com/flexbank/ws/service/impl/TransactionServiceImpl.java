@@ -18,6 +18,9 @@ import com.flexbank.ws.repository.TransactionRepository;
 import com.flexbank.ws.service.inter.TransactionService;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,9 +62,14 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDto> findAllByCustomerId(Integer customerId) {
+    public List<TransactionDto> findAllByCustomerId(Integer customerId, int page, int limit) {
 
-        List<Transaction> transactions = transactionRepository.findAllByCustomerId(customerId);
+        if(page > 0) {
+            page = page - 1;
+        }
+
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<Transaction> transactions = transactionRepository.findAllByCustomerId(customerId, pageable);
 
         List<TransactionDto> transactionDtos =
                 transactions.stream()
@@ -110,7 +118,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction senderTransaction = Transaction.builder()
                 .amount(amount * -1)
-                .type(TransactionType.INTERNAL_TRANSFER)
+                .type(TransactionType.INTERNAL_TRANSFER.getText())
                 .createdAtDate(transactionDate)
                 .createdAtTime(transactionTime)
                 .customerId(senderCard.getCustomerId())
@@ -118,7 +126,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction recipientTransaction = Transaction.builder()
                 .amount(amount)
-                .type(TransactionType.INTERNAL_TRANSFER)
+                .type(TransactionType.INTERNAL_TRANSFER.getText())
                 .createdAtDate(transactionDate)
                 .createdAtTime(transactionTime)
                 .customerId(recipientCard.getCustomerId())

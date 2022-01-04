@@ -15,6 +15,7 @@ import java.time.LocalTime;
 public class TransactionDto {
     private Double amount;
     private String description;
+    private String type;
     private LocalDate createdAtDate;
     private LocalTime createdAtTime;
 }

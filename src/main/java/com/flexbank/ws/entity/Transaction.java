@@ -27,9 +27,8 @@ public class Transaction {
     @Column(name = "amount")
     private Double amount;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private TransactionType type;
+    private String type;
 
     @Column(name = "description")
     private String description;

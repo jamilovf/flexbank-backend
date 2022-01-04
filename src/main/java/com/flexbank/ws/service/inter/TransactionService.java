@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TransactionService {
 
-    List<TransactionDto> findAllByCustomerId(Integer customerId);
+    List<TransactionDto> findAllByCustomerId(Integer customerId, int page, int limit);
 
     void transferInternal(InternalTransferRequest internalTransferRequest) throws Exception;
 
