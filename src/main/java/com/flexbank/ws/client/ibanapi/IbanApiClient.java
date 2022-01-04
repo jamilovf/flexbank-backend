@@ -39,9 +39,16 @@ public class IbanApiClient {
         HttpEntity<Map<String, String>> request =
                 new HttpEntity<Map<String, String>>(map, headers);
 
-        ResponseEntity<String> response =
-                restTemplate.postForEntity(IbanApiConstants.VALIDATE_IBAN_URL,
+        ResponseEntity<String> response = null;
+                try{
+                   response = restTemplate.postForEntity(IbanApiConstants.VALIDATE_IBAN_URL,
                         request , String.class );
+                }
+                catch (Exception ex){
+                    IbanApiModel apiModel = new IbanApiModel();
+                    apiModel.setResult(ex.getMessage());
+                    return apiModel;
+                }
 
         IbanApiModel ibanApiModel = getIbanApiModel(response);
 

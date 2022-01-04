@@ -14,5 +14,5 @@ public class ExternalTransferRequest {
     private String swiftCode;
     private String recipientName;
     private Double amount;
-    private String chosenCard;
+    private Integer chosenCardId;
 }

@@ -22,11 +22,15 @@ public class RabbitMqConfiguration {
     private String internalTransferQueue;
     private String externalTransferQueue;
     private String approvedExternalTransferQueue;
+    private String declinedExternalTransferQueue;
     private String orderCardQueue;
     private String internalTransferRoutingKey;
     private String externalTransferRoutingKey;
     private String approvedExternalTransferRoutingKey;
+    private String declinedExternalTransferRoutingKey;
     private String orderCardRoutingKey;
+
+
 
     @Bean
     DirectExchange exchange() {
@@ -46,6 +50,11 @@ public class RabbitMqConfiguration {
     @Bean
     Queue approvedExternalTransferQueue() {
         return new Queue(approvedExternalTransferQueue, true);
+    }
+
+    @Bean
+    Queue declinedExternalTransferQueue() {
+        return new Queue(declinedExternalTransferQueue, true);
     }
 
     @Bean
@@ -70,6 +79,13 @@ public class RabbitMqConfiguration {
                                             DirectExchange exchange){
         return BindingBuilder.bind(approvedExternalTransferQueue)
                 .to(exchange).with(approvedExternalTransferRoutingKey);
+    }
+
+    @Bean
+    Binding declinedExternalTransferBinding(Queue declinedExternalTransferQueue,
+                                            DirectExchange exchange){
+        return BindingBuilder.bind(declinedExternalTransferQueue)
+                .to(exchange).with(declinedExternalTransferRoutingKey);
     }
 
     @Bean

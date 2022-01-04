@@ -14,5 +14,5 @@ public class InternalTransferRequest {
     private String firstName;
     private String lastName;
     private Double amount;
-    private String chosenCard;
+    private Integer chosenCardId;
 }

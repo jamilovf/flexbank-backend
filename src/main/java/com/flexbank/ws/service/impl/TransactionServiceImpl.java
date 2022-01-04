@@ -77,7 +77,7 @@ public class TransactionServiceImpl implements TransactionService {
             throws Exception{
 
         Card senderCard = cardRepository
-                .findByCardNumber(internalTransferRequest.getChosenCard());
+                .findById(internalTransferRequest.getChosenCardId()).get();
         Card recipientCard = cardRepository
                 .findByCardNumber(internalTransferRequest.getRecipientCardNumber());
 
