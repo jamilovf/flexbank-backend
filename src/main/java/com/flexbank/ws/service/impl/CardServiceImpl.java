@@ -61,7 +61,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void blockCard(Integer id) throws Exception{
+    public CardDto blockCard(Integer id) throws Exception{
 
         Card card = cardRepository.findById(id).get();
 
@@ -73,7 +73,9 @@ public class CardServiceImpl implements CardService {
            }
 
            card.setIsBlocked(true);
-           cardRepository.save(card);
+           Card blockedCard = cardRepository.save(card);
+
+           return cardConverter.entityToDto(blockedCard);
     }
 
     @Override
@@ -101,5 +103,22 @@ public class CardServiceImpl implements CardService {
                 .build();
 
         cardRepository.save(card);
+    }
+
+    @Override
+    public CardDto unblockCard(Integer id) throws BadRequestException {
+        Card card = cardRepository.findById(id).get();
+
+        if(card.getIsExpired()){
+            throw new BadRequestException(ErrorMessage.EXPIRED_CARD_BLOCK.getErrorMessage());
+        }
+        if(!card.getIsBlocked()){
+            throw new BadRequestException(ErrorMessage.CARD_ALREADY_UNBLOCKED.getErrorMessage());
+        }
+
+        card.setIsBlocked(false);
+        Card unblockedCard = cardRepository.save(card);
+
+        return cardConverter.entityToDto(unblockedCard);
     }
 }

@@ -14,7 +14,8 @@ public enum ErrorMessage {
     WRONG_CARD_NUMBER("There is no card with this number!"),
     EXPIRED_CARD_BLOCK("Expired card cannot be blocked!"),
     CARD_ALREADY_BLOCKED("Card is already blocked!"),
-    CARD_ALREADY_EXISTS("Ordered card already exists!");
+    CARD_ALREADY_EXISTS("Ordered card already exists!"),
+    CARD_ALREADY_UNBLOCKED("Card is already unblocked!");
 
     private String errorMessage;
 
