@@ -12,9 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class UpdateCustomerRequest {
-    private String firstName;
-    private String lastName;
-    private LocalDate birthDate;
     private String city;
     private String address;
     private String zip;
