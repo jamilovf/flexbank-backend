@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,7 +121,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction senderTransaction = Transaction.builder()
                 .amount(amount * -1)
-                .type(TransactionType.INTERNAL_TRANSFER.getText())
+                .type("Transfer")
+                .description(TransactionType.INTERNAL_TRANSFER.getText())
                 .createdAtDate(transactionDate)
                 .createdAtTime(transactionTime)
                 .customerId(senderCard.getCustomerId())
@@ -128,7 +130,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction recipientTransaction = Transaction.builder()
                 .amount(amount)
-                .type(TransactionType.INTERNAL_TRANSFER.getText())
+                .type("Transfer")
+                .description(TransactionType.INTERNAL_TRANSFER.getText())
                 .createdAtDate(transactionDate)
                 .createdAtTime(transactionTime)
                 .customerId(recipientCard.getCustomerId())
@@ -154,5 +157,32 @@ public class TransactionServiceImpl implements TransactionService {
         int pageCount =  (count % 10 == 0) ? (count / 10) : (count / 10 + 1);
 
         return pageCount;
+    }
+
+    @Override
+    public List<TransactionDto> searchTransactionsByDateAndType(Integer customerId,
+                                                                LocalDate from, LocalDate to,
+                                                                String type1, String type2,
+                                                                int page, int limit) {
+
+        if(page > 0) {
+            page = page - 1;
+        }
+
+        List<String> types = new ArrayList<>();
+        types.add(type1);
+        types.add(type2);
+
+        Pageable pageable = PageRequest.of(page, limit, Sort.by("createdAtDate", "createdAtTime"));
+        Page<Transaction> transactions = transactionRepository
+                .findAllByCreatedAtDateBetweenAndCustomerIdAndTypeIn(
+                         from, to, customerId, types, pageable);
+
+        List<TransactionDto> transactionDtos =
+                transactions.stream()
+                        .map(transaction -> transactionConverter.entityToDto(transaction))
+                        .collect(Collectors.toList());
+
+        return transactionDtos;
     }
 }
