@@ -25,7 +25,8 @@ public class TransactionController {
     @GetMapping("/findAll")
     public ResponseEntity<?> findAllByCustomerId(Authentication authentication,
                                                  @RequestParam(value = "page") int page,
-                                                 @RequestParam(value = "limit") int limit){
+                                                 @RequestParam(value = "limit",
+                                                         defaultValue = "10") int limit){
 
         Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
 
@@ -52,5 +53,13 @@ public class TransactionController {
 
         return ResponseEntity.ok("Operation has been successfully completed!");
     }
+    @GetMapping("/countPages")
+    public ResponseEntity<?> findAllByCustomerId(Authentication authentication){
 
+        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
+
+        Integer count = transactionService.countPagesByCustomerId(customerId);
+
+        return ResponseEntity.ok(count);
+    }
 }

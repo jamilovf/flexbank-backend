@@ -8,6 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface TransactionRepository extends PagingAndSortingRepository<Transaction, Integer> {
 
     Page<Transaction> findAllByCustomerId(Integer customerId, Pageable pageable);
+    Integer countByCustomerId(Integer customerId);
 
 
 }

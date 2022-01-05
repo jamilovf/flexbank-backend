@@ -13,4 +13,6 @@ public interface TransactionService {
     void transferInternal(InternalTransferRequest internalTransferRequest) throws Exception;
 
     void transferExternal(ExternalTransferRequest externalTransferRequest);
+
+    Integer countPagesByCustomerId(Integer customerId);
 }

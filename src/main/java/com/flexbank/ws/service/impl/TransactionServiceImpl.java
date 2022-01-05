@@ -144,4 +144,13 @@ public class TransactionServiceImpl implements TransactionService {
                 externalTransferRequest);
 
     }
+
+    @Override
+    public Integer countPagesByCustomerId(Integer customerId) {
+        int count = transactionRepository.countByCustomerId(customerId);
+
+        int pageCount =  (count % 10 == 0) ? (count / 10) : (count / 10 + 1);
+
+        return pageCount;
+    }
 }
