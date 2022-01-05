@@ -21,6 +21,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,8 +69,9 @@ public class TransactionServiceImpl implements TransactionService {
             page = page - 1;
         }
 
-        Pageable pageable = PageRequest.of(page, limit);
-        Page<Transaction> transactions = transactionRepository.findAllByCustomerId(customerId, pageable);
+        Pageable pageable = PageRequest.of(page, limit, Sort.by("createdAtDate", "createdAtTime"));
+        Page<Transaction> transactions = transactionRepository
+                .findAllByCustomerId(customerId, pageable);
 
         List<TransactionDto> transactionDtos =
                 transactions.stream()
