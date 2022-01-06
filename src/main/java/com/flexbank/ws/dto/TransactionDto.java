@@ -20,4 +20,5 @@ public class TransactionDto {
     private LocalTime createdAtTime;
     private int page;
     private int limit;
+    private int count;
 }

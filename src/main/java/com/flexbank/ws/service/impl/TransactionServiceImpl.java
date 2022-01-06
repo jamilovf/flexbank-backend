@@ -167,7 +167,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionDto> searchTransactionsByDateAndType(Integer customerId,
-                                                                LocalDate from, LocalDate to,
+                                                                String from, String to,
                                                                 String type1, String type2,
                                                                 int page, int limit) {
 
@@ -179,15 +179,37 @@ public class TransactionServiceImpl implements TransactionService {
         types.add(type1);
         types.add(type2);
 
+        String[] fromDateSplit =  from.split("-");
+        String[] toDateSplit =  to.split("-");
+
+        LocalDate fromDate = LocalDate.of(Integer.parseInt(fromDateSplit[0]),
+                Integer.parseInt(fromDateSplit[1]),Integer.parseInt(fromDateSplit[2]));
+        LocalDate toDate = LocalDate.of(Integer.parseInt(toDateSplit[0]),
+                Integer.parseInt(toDateSplit[1]),Integer.parseInt(toDateSplit[2]));
+
         Pageable pageable = PageRequest.of(page, limit, Sort.by("createdAtDate", "createdAtTime"));
         Page<Transaction> transactions = transactionRepository
                 .findAllByCreatedAtDateBetweenAndCustomerIdAndTypeIn(
-                         from, to, customerId, types, pageable);
+                         fromDate, toDate, customerId, types, pageable);
+
+        Integer count =
+                transactionRepository
+                        .countByCreatedAtDateBetweenAndCustomerIdAndTypeIn(
+                                fromDate, toDate, customerId, types);
+
+        int pageCount =  (count % 10 == 0) ? (count / 10) : (count / 10 + 1);
 
         List<TransactionDto> transactionDtos =
                 transactions.stream()
                         .map(transaction -> transactionConverter.entityToDto(transaction))
                         .collect(Collectors.toList());
+
+        int trPage = page;
+        transactionDtos.forEach(transactionDto -> {
+            transactionDto.setPage(trPage);
+            transactionDto.setLimit(limit);
+            transactionDto.setCount(pageCount);
+        });
 
         return transactionDtos;
     }

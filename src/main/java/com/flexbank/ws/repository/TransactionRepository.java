@@ -13,9 +13,13 @@ public interface TransactionRepository extends PagingAndSortingRepository<Transa
     Page<Transaction> findAllByCustomerId(Integer customerId, Pageable pageable);
     Integer countByCustomerId(Integer customerId);
     Page<Transaction> findAllByCreatedAtDateBetweenAndCustomerIdAndTypeIn(LocalDate from,
-                                                                               LocalDate to,
+                                                                          LocalDate to,
                                                                         Integer customerId,
                                                                         List<String> types,
                                                                         Pageable pageable);
+    Integer countByCreatedAtDateBetweenAndCustomerIdAndTypeIn(LocalDate from,
+                                                              LocalDate to,
+                                                                          Integer customerId,
+                                                                          List<String> types);
 
 }

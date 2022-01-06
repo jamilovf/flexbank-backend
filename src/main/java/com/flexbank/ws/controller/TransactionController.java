@@ -56,34 +56,39 @@ public class TransactionController {
     }
 
     @GetMapping("/countPages")
-    public ResponseEntity<?> findAllByCustomerId(Authentication authentication){
+    public ResponseEntity<?> getCountPages(Authentication authentication){
 
         Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
 
         Integer count = transactionService.countPagesByCustomerId(customerId);
-
+        count = 50;
         return ResponseEntity.ok(count);
     }
 
     @GetMapping("/search")
     public ResponseEntity<?> filterTransactions(Authentication authentication,
-                                                @RequestBody SearchRequest searchRequest,
+                                                @RequestParam(value = "from") String from,
+                                                @RequestParam(value = "to") String to,
+                                                @RequestParam(value = "type1") String type1,
+                                                @RequestParam(value = "type2") String type2,
                                                 @RequestParam(value = "page") int page,
                                                 @RequestParam(value = "limit",
-                                                        defaultValue = "10") int limit){
+                                                        defaultValue = "3") int limit){
 
         Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
 
-        if(searchRequest.getType2() == null){
-            searchRequest.setType2(searchRequest.getType1());
+        if(type2.isEmpty()){
+            type2 = type1;
+        }
+
+        if(type1.isEmpty()){
+            type1 = type2;
         }
 
         List<TransactionDto> transactionDtos =
                 transactionService
                         .searchTransactionsByDateAndType(customerId,
-                                searchRequest.getFrom(), searchRequest.getTo(),
-                                searchRequest.getType1(), searchRequest.getType2(),
-                                page, limit);
+                                from, to, type1, type2, page, limit);
 
         return ResponseEntity.ok(transactionDtos);
     }

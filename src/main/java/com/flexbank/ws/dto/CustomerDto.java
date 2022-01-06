@@ -22,7 +22,6 @@ public class CustomerDto {
     private String email;
 
     @NotBlank(message = "Password field cannot be empty")
-    @Min(value = 8, message = "Password must contain at least 8 characters")
     @NotNull
     private String password;
 

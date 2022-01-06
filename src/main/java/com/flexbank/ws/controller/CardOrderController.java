@@ -19,7 +19,7 @@ public class CardOrderController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<?> findAllByCustomerId(Authentication authentication,
+    public ResponseEntity<?> orderCard(Authentication authentication,
                                                  @RequestBody CardOrderRequest cardOrderRequest) throws Exception {
 
         Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());

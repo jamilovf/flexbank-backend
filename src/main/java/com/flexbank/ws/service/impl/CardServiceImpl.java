@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,15 +48,17 @@ public class CardServiceImpl implements CardService {
         List<Card> cards = cardRepository.findAllByCustomerId(customerId);
         Optional<Customer> customer = customerRepository.findById(customerId);
 
-        List<CardDto> cardDtos =
-                cards.stream()
-                     .map(card -> cardConverter.entityToDto(card))
-                     .collect(Collectors.toList());
+        List<CardDto> cardDtos = new ArrayList<>();
+        if(cards != null) {
+             cardDtos = cards.stream()
+                            .map(card -> cardConverter.entityToDto(card))
+                            .collect(Collectors.toList());
 
-        cardDtos.stream()
-                .forEach(cardDto ->
-                        cardDto.setCustomerName(customer.get().getFirstName() + " "
-                                + customer.get().getLastName()));
+            cardDtos.stream()
+                    .forEach(cardDto ->
+                            cardDto.setCustomerName(customer.get().getFirstName() + " "
+                                    + customer.get().getLastName()));
+        }
 
         return cardDtos;
     }
