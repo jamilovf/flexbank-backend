@@ -79,6 +79,12 @@ public class TransactionServiceImpl implements TransactionService {
                 .map(transaction -> transactionConverter.entityToDto(transaction))
                 .collect(Collectors.toList());
 
+        int trPage = page;
+        transactionDtos.forEach(transactionDto -> {
+            transactionDto.setPage(trPage);
+            transactionDto.setLimit(limit);
+        });
+
         return transactionDtos;
     }
 

@@ -18,4 +18,6 @@ public class TransactionDto {
     private String type;
     private LocalDate createdAtDate;
     private LocalTime createdAtTime;
+    private int page;
+    private int limit;
 }
