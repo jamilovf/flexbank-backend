@@ -1,29 +1,38 @@
 package com.flexbank.ws.configuration.security;
 
+import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.AuthService;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
+import com.flexbank.ws.service.inter.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+@EnableGlobalMethodSecurity(securedEnabled = true)
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
     private final AuthService authService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final CustomerPhoneNumberService customerPhoneNumberService;
+    private final CustomerRepository customerRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public WebSecurity(AuthService authService,
                        BCryptPasswordEncoder bCryptPasswordEncoder,
-                       CustomerPhoneNumberService customerPhoneNumberService) {
+                       CustomerPhoneNumberService customerPhoneNumberService,
+                       CustomerRepository customerRepository,
+                       RoleRepository roleRepository) {
         this.authService = authService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.customerPhoneNumberService = customerPhoneNumberService;
+        this.customerRepository = customerRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -43,7 +52,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated().and()
                 .addFilter(getAuthenticationFilter())
-                .addFilter(new AuthorizationFilter(authenticationManager()))
+                .addFilter(new AuthorizationFilter(authenticationManager(), customerRepository, roleRepository))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

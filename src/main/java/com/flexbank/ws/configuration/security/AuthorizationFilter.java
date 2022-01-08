@@ -1,11 +1,15 @@
 package com.flexbank.ws.configuration.security;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flexbank.ws.entity.Customer;
+import com.flexbank.ws.entity.Role;
+import com.flexbank.ws.repository.CustomerRepository;
+import com.flexbank.ws.service.inter.RoleRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -15,11 +19,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
-    public AuthorizationFilter(AuthenticationManager authManager) {
+    private final CustomerRepository customerRepository;
+    private final RoleRepository roleRepository;
+
+    public AuthorizationFilter(AuthenticationManager authManager,
+                               CustomerRepository customerRepository,
+                               RoleRepository roleRepository) {
         super(authManager);
+        this.customerRepository = customerRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -59,8 +71,14 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             }
 
             if (user != null) {
+
+                Customer customer = customerRepository.findById(Integer.parseInt(user)).get();
+                List<GrantedAuthority> authorities = new ArrayList<>();
+                Role role = roleRepository.findById(customer.getRoleId()).get();
+                authorities.add(new SimpleGrantedAuthority(role.getName().name()));
+
                 return new UsernamePasswordAuthenticationToken(user,
-                        null, new ArrayList<>());
+                        null, authorities);
             }
 
             return null;

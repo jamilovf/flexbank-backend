@@ -7,6 +7,7 @@ import com.flexbank.ws.dto.CustomerDto;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.entity.Customer;
 import com.flexbank.ws.entity.CustomerPhoneNumber;
+import com.flexbank.ws.entity.Role;
 import com.flexbank.ws.exception.BadRequestException;
 import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.repository.CustomerPhoneNumberRepository;
@@ -14,7 +15,10 @@ import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.AuthService;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
 import com.flexbank.ws.service.inter.CustomerService;
+import com.flexbank.ws.service.inter.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -33,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
     private final CustomerRepository customerRepository;
     private final CustomerConverter customerConverter;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public AuthServiceImpl(CustomerPhoneNumberService customerPhoneNumberService,
@@ -41,7 +47,8 @@ public class AuthServiceImpl implements AuthService {
                            CustomerService customerService,
                            CustomerRepository customerRepository,
                            CustomerConverter customerConverter,
-                           BCryptPasswordEncoder bCryptPasswordEncoder) {
+                           BCryptPasswordEncoder bCryptPasswordEncoder,
+                           RoleRepository roleRepository) {
         this.customerPhoneNumberService = customerPhoneNumberService;
         this.customerPhoneNumberRepository = customerPhoneNumberRepository;
         this.smsSender = smsSender;
@@ -49,6 +56,7 @@ public class AuthServiceImpl implements AuthService {
         this.customerRepository = customerRepository;
         this.customerConverter = customerConverter;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -120,6 +128,11 @@ public class AuthServiceImpl implements AuthService {
             throw new UsernameNotFoundException(email);
         }
 
-        return new User(customer.getEmail(), customer.getPassword(), new ArrayList<>());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        Role role = roleRepository.findById(customer.getRoleId()).get();
+
+        authorities.add(new SimpleGrantedAuthority(role.getName().name()));
+
+        return new User(customer.getEmail(), customer.getPassword(), authorities);
     }
 }

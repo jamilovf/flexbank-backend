@@ -55,4 +55,7 @@ public class Customer {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "role_id")
+    private Integer roleId;
+
 }
