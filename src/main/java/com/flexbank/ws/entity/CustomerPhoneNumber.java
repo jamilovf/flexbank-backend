@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  *
@@ -38,5 +39,14 @@ public class CustomerPhoneNumber {
 
     @Column(name = "is_signup_allowed")
     private boolean isSignupAllowed;
+
+    @Column(name="first_name")
+    private String firstName;
+
+    @Column(name="last_name")
+    private String lastName;
+
+    @Column(name="birth_date")
+    private LocalDate birthDate;
 
 }

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,5 +19,8 @@ public class CustomerPhoneNumberDto {
     private String messageCode;
     private boolean isMessageCodeAllowed;
     private boolean isSignupAllowed;
+    private String firstName;
+    private String lastName;
+    private LocalDate birthDate;
 
 }

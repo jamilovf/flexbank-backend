@@ -57,6 +57,8 @@ public class AuthServiceImpl implements AuthService {
                 customerPhoneNumberService.findByPhoneNumber(phoneNumber);
 
         SmsRequest smsRequest = new SmsRequest(phoneNumber,
+                "Hello, " + customerPhoneNumberDto.getFirstName() + " " +
+                        customerPhoneNumberDto.getLastName() + "! " +
                 "Welcome to FlexBank!\n Your verification code: ");
         smsSender.sendSms(smsRequest);
 
@@ -85,12 +87,16 @@ public class AuthServiceImpl implements AuthService {
        customer.setPassword(bCryptPasswordEncoder.encode(customerDto.getPassword()));
        customer.setPhoneNumber(customerDto.getPhoneNumber());
 
-       CustomerPhoneNumber customerPhoneNumber=
+       CustomerPhoneNumber customerPhoneNumber =
                customerPhoneNumberRepository.findByPhoneNumber(customerDto.getPhoneNumber());
        customerPhoneNumber.setRegistered(true);
        customerPhoneNumber.setMessageCode(null);
        customerPhoneNumber.setMessageCodeAllowed(false);
        customerPhoneNumber.setSignupAllowed(false);
+
+       customer.setFirstName(customerPhoneNumber.getFirstName());
+       customer.setLastName(customerPhoneNumber.getLastName());
+       customer.setBirthDate(customerPhoneNumber.getBirthDate());
 
        customerPhoneNumberRepository.save(customerPhoneNumber);
        customerService.save(customer);

@@ -13,6 +13,7 @@ import com.flexbank.ws.repository.CardRepository;
 import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.CardService;
 import com.flexbank.ws.util.CardUtils;
+import com.flexbank.ws.util.CustomerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,9 +88,7 @@ public class CardServiceImpl implements CardService {
         CardType cardType = cardOrderRequest.getType().equals("PREMIUM")
                 ?  CardType.PREMIUM : CardType.STANDARD;
 
-       String accountNumber =
-               customerRepository.findById(cardOrderRequest.getCustomerId())
-                       .get().getAccountNumber();
+       String accountNumber = CustomerUtils.generateAccountNumber();
 
         String cardNumber =
                 CardUtils.generateCardNumber(bankDetailsConfiguration.getMII(),

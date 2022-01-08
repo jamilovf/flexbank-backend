@@ -55,7 +55,4 @@ public class Customer {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "account_number")
-    private String accountNumber;
-
 }

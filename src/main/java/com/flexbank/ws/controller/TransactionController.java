@@ -3,7 +3,6 @@ package com.flexbank.ws.controller;
 import com.flexbank.ws.dto.TransactionDto;
 import com.flexbank.ws.dto.request.ExternalTransferRequest;
 import com.flexbank.ws.dto.request.InternalTransferRequest;
-import com.flexbank.ws.dto.request.SearchRequest;
 import com.flexbank.ws.service.inter.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +60,7 @@ public class TransactionController {
         Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
 
         Integer count = transactionService.countPagesByCustomerId(customerId);
-        count = 50;
+        count = 50; //todo remove default count
         return ResponseEntity.ok(count);
     }
 
