@@ -44,7 +44,7 @@ public class CardOrderServiceImpl implements CardOrderService {
         List<CardDto> cardDtoList =
                 cardService.findAllByCustomerId(cardOrderRequest.getCustomerId());
 
-        if(cardDtoList.isEmpty()){
+        if(!cardDtoList.isEmpty()){
         for (CardDto cardDto : cardDtoList ) {
             if(cardDto.getCardType().equals(cardOrderRequest.getType())){
                 throw new BadRequestException(ErrorMessage.CARD_ALREADY_EXISTS.getErrorMessage());

@@ -197,7 +197,7 @@ public class TransactionServiceImpl implements TransactionService {
                         .countByCreatedAtDateBetweenAndCustomerIdAndTypeIn(
                                 fromDate, toDate, customerId, types);
 
-        int pageCount =  (count % 10 == 0) ? (count / 10) : (count / 10 + 1);
+        int pageCount =  (count % limit == 0) ? (count / limit) : (count / limit + 1);
 
         List<TransactionDto> transactionDtos =
                 transactions.stream()
