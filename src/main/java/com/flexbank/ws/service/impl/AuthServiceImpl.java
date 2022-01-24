@@ -8,6 +8,7 @@ import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.entity.Customer;
 import com.flexbank.ws.entity.CustomerPhoneNumber;
 import com.flexbank.ws.entity.Role;
+import com.flexbank.ws.entity.RoleType;
 import com.flexbank.ws.exception.BadRequestException;
 import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.repository.CustomerPhoneNumberRepository;
@@ -105,6 +106,7 @@ public class AuthServiceImpl implements AuthService {
        customer.setFirstName(customerPhoneNumber.getFirstName());
        customer.setLastName(customerPhoneNumber.getLastName());
        customer.setBirthDate(customerPhoneNumber.getBirthDate());
+       customer.setRoleId(RoleType.ROLE_CUSTOMER.getRoleId());
 
        customerPhoneNumberRepository.save(customerPhoneNumber);
        customerService.save(customer);
