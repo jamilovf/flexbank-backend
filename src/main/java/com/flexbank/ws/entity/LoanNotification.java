@@ -1,19 +1,9 @@
 package com.flexbank.ws.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -23,6 +13,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Builder
 @Entity
 @Table(name = "loan_notifications")
 public class LoanNotification {
@@ -41,8 +32,9 @@ public class LoanNotification {
     @Column(name = "interest_rate")
     private int interestRate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private String type;
+    private LoanRequestType type;
 
     @Column(name = "customer_id")
     private Integer customerId;
