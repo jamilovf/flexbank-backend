@@ -57,4 +57,14 @@ public class AdminServiceImpl implements AdminService {
                 });
     }
 
+    @Override
+    public void declineLoanRequest(Integer loanRequestId) {
+
+        loanRequestRepository.findById(loanRequestId)
+                .ifPresent(loanRequest -> {
+                    loanRequest.setStatus(LoanStatus.DECLINED);
+                    loanRequestRepository.save(loanRequest);
+                });
+    }
+
 }

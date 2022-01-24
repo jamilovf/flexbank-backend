@@ -12,4 +12,6 @@ public interface AdminService {
     List<LoanRequestNotificationDto> getAllLoanRequestNotifications();
 
     void approveLoanRequest(Integer loanRequestId);
+
+    void declineLoanRequest(Integer loanRequestId);
 }

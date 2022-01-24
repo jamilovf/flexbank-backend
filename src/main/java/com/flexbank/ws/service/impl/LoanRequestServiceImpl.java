@@ -25,7 +25,7 @@ public class LoanRequestServiceImpl implements LoanRequestService {
     @Override
     public void requestPersonalLoan(Integer customerId, LoanRequestDto loanRequestDto) {
 
-        loanRequestDto.setType(LoanRequestType.PERSONAL_LOAN);
+        loanRequestDto.setType(LoanRequestType.PERSONAL);
 
         LoanRequest loanRequest = loanRequestConverter.dtoToEntity(loanRequestDto);
 
@@ -37,7 +37,7 @@ public class LoanRequestServiceImpl implements LoanRequestService {
     @Override
     public void requestCarLoan(Integer customerId, LoanRequestDto loanRequestDto) {
 
-        loanRequestDto.setType(LoanRequestType.CAR_LOAN);
+        loanRequestDto.setType(LoanRequestType.CAR);
 
         LoanRequest loanRequest = loanRequestConverter.dtoToEntity(loanRequestDto);
 

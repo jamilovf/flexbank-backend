@@ -48,4 +48,13 @@ public class AdminController {
 
         return ResponseEntity.ok("Loan request is approved successfully!");
     }
+
+    @PutMapping("/declineLoanRequest")
+    public ResponseEntity<?> declineLoanRequest(@RequestParam(value = "loanRequestId")
+                                                        Integer loanRequestId){
+
+        adminService.declineLoanRequest(loanRequestId);
+
+        return ResponseEntity.ok("Loan request is declined successfully!");
+    }
 }
