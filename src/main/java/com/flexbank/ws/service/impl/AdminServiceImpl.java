@@ -4,6 +4,7 @@ import com.flexbank.ws.converter.CustomerPhoneNumberConverter;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.dto.LoanRequestNotificationDto;
 import com.flexbank.ws.entity.CustomerPhoneNumber;
+import com.flexbank.ws.entity.LoanStatus;
 import com.flexbank.ws.repository.CustomerPhoneNumberRepository;
 import com.flexbank.ws.repository.LoanRequestRepository;
 import com.flexbank.ws.service.inter.AdminService;
@@ -44,6 +45,16 @@ public class AdminServiceImpl implements AdminService {
                 loanRequestRepository.getAllLoanRequestNotifications();
 
         return loanRequestNotificationDtos;
+    }
+
+    @Override
+    public void approveLoanRequest(Integer loanRequestId) {
+
+        loanRequestRepository.findById(loanRequestId)
+                .ifPresent(loanRequest -> {
+                    loanRequest.setStatus(LoanStatus.APPROVED);
+                    loanRequestRepository.save(loanRequest);
+                });
     }
 
 }

@@ -10,4 +10,6 @@ public interface AdminService {
     void registerCustomerDetails(CustomerPhoneNumberDto customerPhoneNumberDto);
 
     List<LoanRequestNotificationDto> getAllLoanRequestNotifications();
+
+    void approveLoanRequest(Integer loanRequestId);
 }

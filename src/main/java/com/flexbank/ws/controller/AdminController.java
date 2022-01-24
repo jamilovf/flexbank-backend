@@ -39,4 +39,13 @@ public class AdminController {
 
         return ResponseEntity.ok(loanRequestNotificationDtos);
     }
+
+    @PutMapping("/approveLoanRequest")
+    public ResponseEntity<?> approveLoanRequest(@RequestParam(value = "loanRequestId")
+                                                            Integer loanRequestId){
+
+        adminService.approveLoanRequest(loanRequestId);
+
+        return ResponseEntity.ok("Loan request is approved successfully!");
+    }
 }

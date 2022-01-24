@@ -37,6 +37,7 @@ public class LoanRequest {
     @Column(name = "customer_id")
     private Integer customerId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private LoanStatus status;
 }
