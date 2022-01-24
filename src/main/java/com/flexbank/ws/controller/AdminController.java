@@ -1,11 +1,14 @@
 package com.flexbank.ws.controller;
 
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
+import com.flexbank.ws.dto.LoanRequestNotificationDto;
 import com.flexbank.ws.service.inter.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Secured("ROLE_ADMIN")
 @RestController
@@ -28,4 +31,12 @@ public class AdminController {
         return ResponseEntity.ok("Customer details are registered successfully!");
     }
 
+    @GetMapping("/getAllLoanRequestNotifications")
+    public ResponseEntity<?> getAllLoanRequestNotifications(){
+
+       List<LoanRequestNotificationDto> loanRequestNotificationDtos =
+               adminService.getAllLoanRequestNotifications();
+
+        return ResponseEntity.ok(loanRequestNotificationDtos);
+    }
 }
