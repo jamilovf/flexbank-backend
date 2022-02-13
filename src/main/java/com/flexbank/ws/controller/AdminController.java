@@ -2,6 +2,7 @@ package com.flexbank.ws.controller;
 
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.dto.LoanRequestNotificationDto;
+import com.flexbank.ws.dto.request.LoanResultRequest;
 import com.flexbank.ws.service.inter.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,19 +42,17 @@ public class AdminController {
     }
 
     @PutMapping("/approveLoanRequest")
-    public ResponseEntity<?> approveLoanRequest(@RequestParam(value = "loanRequestId")
-                                                            Integer loanRequestId){
+    public ResponseEntity<?> approveLoanRequest(@RequestBody LoanResultRequest loanResultRequest){
 
-        adminService.approveLoanRequest(loanRequestId);
+        adminService.approveLoanRequest(loanResultRequest.getLoanRequestId());
 
         return ResponseEntity.ok("Loan request is approved successfully!");
     }
 
     @PutMapping("/declineLoanRequest")
-    public ResponseEntity<?> declineLoanRequest(@RequestParam(value = "loanRequestId")
-                                                        Integer loanRequestId){
+    public ResponseEntity<?> declineLoanRequest(@RequestBody LoanResultRequest loanResultRequest){
 
-        adminService.declineLoanRequest(loanRequestId);
+        adminService.declineLoanRequest(loanResultRequest.getLoanRequestId());
 
         return ResponseEntity.ok("Loan request is declined successfully!");
     }
