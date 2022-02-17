@@ -39,4 +39,7 @@ public class LoanNotification {
     @Column(name = "customer_id")
     private Integer customerId;
 
+    @Column(name = "is_paid")
+    private Boolean isPaid;
+
 }

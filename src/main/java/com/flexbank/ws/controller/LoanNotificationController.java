@@ -4,6 +4,7 @@ import com.flexbank.ws.dto.LoanNotificationDto;
 import com.flexbank.ws.service.inter.LoanNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,9 @@ public class LoanNotificationController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAllByCustomerId(@RequestParam Integer customerId){
+    public ResponseEntity<?> findAllByCustomerId(Authentication authentication){
+
+        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
 
         List<LoanNotificationDto> loanNotificationDtos =
                 loanNotificationService.findAllByCustomerId(customerId);

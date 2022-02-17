@@ -8,6 +8,7 @@ import com.flexbank.ws.service.inter.LoanNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,9 @@ public class LoanNotificationServiceImpl implements LoanNotificationService {
 
         List<LoanNotificationDto> loanNotificationDtos =
                 loanNotifications.stream()
+                        .filter(loanNotification ->
+                                loanNotification.getDueTo().getMonth() == LocalDate.now().getMonth() &&
+                                        !loanNotification.getIsPaid())
                         .map(loanNotification -> loanNotificationConverter.entityToDto(loanNotification))
                         .collect(Collectors.toList());
 
