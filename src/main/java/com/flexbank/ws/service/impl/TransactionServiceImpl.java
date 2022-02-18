@@ -6,14 +6,12 @@ import com.flexbank.ws.converter.TransactionConverter;
 import com.flexbank.ws.dto.TransactionDto;
 import com.flexbank.ws.dto.request.ExternalTransferRequest;
 import com.flexbank.ws.dto.request.InternalTransferRequest;
-import com.flexbank.ws.entity.Card;
-import com.flexbank.ws.entity.Customer;
-import com.flexbank.ws.entity.Transaction;
-import com.flexbank.ws.entity.TransactionType;
+import com.flexbank.ws.entity.*;
 import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.exception.NotFoundException;
 import com.flexbank.ws.repository.CardRepository;
 import com.flexbank.ws.repository.CustomerRepository;
+import com.flexbank.ws.repository.LoanNotificationRepository;
 import com.flexbank.ws.repository.TransactionRepository;
 import com.flexbank.ws.service.inter.TransactionService;
 import org.springframework.amqp.core.DirectExchange;
@@ -37,6 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final CustomerRepository customerRepository;
     private final CardRepository cardRepository;
+    private final LoanNotificationRepository loanNotificationRepository;
     private final IbanApiClient ibanApiClient;
 
     private final DirectExchange exchange;
@@ -48,7 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionServiceImpl(TransactionRepository transactionRepository,
                                   CustomerRepository customerRepository,
                                   CardRepository cardRepository,
-                                  IbanApiClient ibanApiClient,
+                                  LoanNotificationRepository loanNotificationRepository, IbanApiClient ibanApiClient,
                                   DirectExchange exchange,
                                   RabbitTemplate rabbitTemplate,
                                   RabbitMqConfiguration rabbitMqConfiguration,
@@ -56,6 +55,7 @@ public class TransactionServiceImpl implements TransactionService {
         this.transactionRepository = transactionRepository;
         this.customerRepository = customerRepository;
         this.cardRepository = cardRepository;
+        this.loanNotificationRepository = loanNotificationRepository;
         this.ibanApiClient = ibanApiClient;
         this.exchange = exchange;
         this.rabbitTemplate = rabbitTemplate;
@@ -212,5 +212,24 @@ public class TransactionServiceImpl implements TransactionService {
         });
 
         return transactionDtos;
+    }
+
+    @Override
+    @Transactional
+    public void payLoan(Integer loanId, Integer cardId) throws Exception {
+
+        LoanNotification loanNotification = loanNotificationRepository.findById(loanId).get();
+
+        Card card = cardRepository.findById(cardId).get();
+
+        if(card.getBalance() < loanNotification.getAmount()){
+            throw new Exception(ErrorMessage.INSUFFICIENT_BALANCE.getErrorMessage());
+        }
+
+        card.setBalance(card.getBalance() - loanNotification.getAmount());
+        loanNotification.setIsPaid(true);
+
+        cardRepository.save(card);
+        loanNotificationRepository.save(loanNotification);
     }
 }

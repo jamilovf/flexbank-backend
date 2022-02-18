@@ -3,6 +3,7 @@ package com.flexbank.ws.controller;
 import com.flexbank.ws.dto.TransactionDto;
 import com.flexbank.ws.dto.request.ExternalTransferRequest;
 import com.flexbank.ws.dto.request.InternalTransferRequest;
+import com.flexbank.ws.dto.request.LoanPaymentRequest;
 import com.flexbank.ws.service.inter.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -90,5 +91,13 @@ public class TransactionController {
                                 from, to, type1, type2, page, limit);
 
         return ResponseEntity.ok(transactionDtos);
+    }
+
+    @PutMapping("/payLoan")
+    public ResponseEntity<?> payLoan(@RequestBody LoanPaymentRequest loanPaymentRequest) throws Exception {
+
+        transactionService.payLoan(loanPaymentRequest.getLoanId(), loanPaymentRequest.getCardId());
+
+        return ResponseEntity.ok("Loan is paid succesfully!");
     }
 }

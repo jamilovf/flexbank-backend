@@ -20,4 +20,6 @@ public interface TransactionService {
                                                          String from, String to,
                                                          String type1, String type2,
                                                          int page, int limit);
+
+    void payLoan(Integer loanId, Integer cardId) throws Exception;
 }
