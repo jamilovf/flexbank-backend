@@ -15,7 +15,8 @@ public enum ErrorMessage {
     EXPIRED_CARD_BLOCK("Expired card cannot be blocked!"),
     CARD_ALREADY_BLOCKED("Card is already blocked!"),
     CARD_ALREADY_EXISTS("Ordered card already exists!"),
-    CARD_ALREADY_UNBLOCKED("Card is already unblocked!");
+    CARD_ALREADY_UNBLOCKED("Card is already unblocked!"),
+    ATTEMPT_NOT_ALLOWED("Your attempt is blocked! Please, call the Customer Service.");
 
     private String errorMessage;
 

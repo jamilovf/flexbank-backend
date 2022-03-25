@@ -49,4 +49,7 @@ public class CustomerPhoneNumber {
     @Column(name="birth_date")
     private LocalDate birthDate;
 
+    @Column(name = "message_code_attempt")
+    private int messageCodeAttempt;
+
 }

@@ -53,7 +53,13 @@ public class CustomerPhoneNumberServiceImpl implements CustomerPhoneNumberServic
         CustomerPhoneNumber customerPhoneNumber =
                 customerPhoneNumberRepository.findByPhoneNumber(phoneNumber);
 
+        if(customerPhoneNumber.getMessageCodeAttempt() > 3){
+            throw new BadRequestException(ErrorMessage.ATTEMPT_NOT_ALLOWED.getErrorMessage());
+        }
+
         if(!customerPhoneNumber.getMessageCode().equals(smsCode)){
+            customerPhoneNumber.setMessageCodeAttempt(customerPhoneNumber.getMessageCodeAttempt() + 1);
+            customerPhoneNumberRepository.save(customerPhoneNumber);
             throw new BadRequestException(ErrorMessage.WRONG_MESSAGE_CODE.getErrorMessage());
         }
 
