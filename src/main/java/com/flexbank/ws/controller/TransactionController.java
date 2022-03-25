@@ -61,7 +61,7 @@ public class TransactionController {
         Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
 
         Integer count = transactionService.countPagesByCustomerId(customerId);
-        count = 50; //todo remove default count
+
         return ResponseEntity.ok(count);
     }
 
