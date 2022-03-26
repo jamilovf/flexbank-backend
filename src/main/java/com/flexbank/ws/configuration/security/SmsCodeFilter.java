@@ -3,6 +3,8 @@ package com.flexbank.ws.configuration.security;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
+import com.flexbank.ws.entity.CustomerPhoneNumber;
+import com.flexbank.ws.exception.BadRequestException;
 import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.exception.ExceptionMessage;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
@@ -33,10 +35,14 @@ public class SmsCodeFilter extends OncePerRequestFilter {
                                     HttpServletResponse res,
                                     FilterChain chain) throws ServletException, IOException {
 
-        CustomerPhoneNumberDto customerPhoneNumberDto =
+        CustomerPhoneNumber customerPhoneNumber =
                 customerPhoneNumberService.findByPhoneNumber(req.getHeader("phone"));
 
-        if(!customerPhoneNumberDto.isMessageCodeAllowed()){
+        if(customerPhoneNumber.isRegistered()){
+            throw new BadRequestException(ErrorMessage.CUSTOMER_ALREADY_REGISTERED.getErrorMessage());
+        }
+
+        if(!customerPhoneNumber.isMessageCodeAllowed()){
                 ExceptionMessage errorResponse =
                         new ExceptionMessage(new Date(), ErrorMessage.NOT_ALLOWED.getErrorMessage());
 

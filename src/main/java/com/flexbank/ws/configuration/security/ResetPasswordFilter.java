@@ -2,34 +2,29 @@ package com.flexbank.ws.configuration.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.entity.CustomerPhoneNumber;
 import com.flexbank.ws.exception.BadRequestException;
 import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.exception.ExceptionMessage;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
-import lombok.Data;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
-@Data
-public class SignupFilter extends OncePerRequestFilter {
+public class ResetPasswordFilter extends OncePerRequestFilter {
 
     private final CustomerPhoneNumberService customerPhoneNumberService;
 
-    public SignupFilter(CustomerPhoneNumberService customerPhoneNumberService) {
+    public ResetPasswordFilter(CustomerPhoneNumberService customerPhoneNumberService) {
         this.customerPhoneNumberService = customerPhoneNumberService;
     }
-
-
-
 
     @SneakyThrows
     @Override
@@ -37,14 +32,11 @@ public class SignupFilter extends OncePerRequestFilter {
                                     HttpServletResponse res,
                                     FilterChain chain) throws ServletException, IOException {
 
+
         CustomerPhoneNumber customerPhoneNumber =
                 customerPhoneNumberService.findByPhoneNumber(req.getHeader("phone"));
 
-        if(customerPhoneNumber.isRegistered()){
-            throw new BadRequestException(ErrorMessage.CUSTOMER_ALREADY_REGISTERED.getErrorMessage());
-        }
-
-        if(!customerPhoneNumber.isSignupAllowed()){
+        if(!customerPhoneNumber.isPasswordResetAllowed()){
             ExceptionMessage errorResponse =
                     new ExceptionMessage(new Date(), ErrorMessage.NOT_ALLOWED.getErrorMessage());
 
@@ -61,7 +53,7 @@ public class SignupFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request)
             throws ServletException {
         String path = request.getRequestURI();
-        return !SecurityConstants.SIGNUP_URL.equals(path);
+        return !SecurityConstants.RESET_PASSWORD_URL.equals(path);
     }
 
     public String convertObjectToJson(Object object) throws JsonProcessingException {

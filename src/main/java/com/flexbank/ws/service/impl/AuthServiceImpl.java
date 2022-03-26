@@ -3,6 +3,7 @@ package com.flexbank.ws.service.impl;
 import com.flexbank.ws.client.sms.SmsRequest;
 import com.flexbank.ws.client.sms.SmsSender;
 import com.flexbank.ws.converter.CustomerConverter;
+import com.flexbank.ws.converter.CustomerPhoneNumberConverter;
 import com.flexbank.ws.dto.CustomerDto;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.entity.Customer;
@@ -38,6 +39,7 @@ public class AuthServiceImpl implements AuthService {
     private final CustomerService customerService;
     private final CustomerRepository customerRepository;
     private final CustomerConverter customerConverter;
+    private final CustomerPhoneNumberConverter customerPhoneNumberConverter;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
 
@@ -48,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
                            CustomerService customerService,
                            CustomerRepository customerRepository,
                            CustomerConverter customerConverter,
+                           CustomerPhoneNumberConverter customerPhoneNumberConverter,
                            BCryptPasswordEncoder bCryptPasswordEncoder,
                            RoleRepository roleRepository) {
         this.customerPhoneNumberService = customerPhoneNumberService;
@@ -56,14 +59,22 @@ public class AuthServiceImpl implements AuthService {
         this.customerService = customerService;
         this.customerRepository = customerRepository;
         this.customerConverter = customerConverter;
+        this.customerPhoneNumberConverter = customerPhoneNumberConverter;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.roleRepository = roleRepository;
     }
 
     @Override
     public CustomerPhoneNumberDto verifyPhoneNumber(String phoneNumber) throws Exception {
-        CustomerPhoneNumberDto customerPhoneNumberDto =
+        CustomerPhoneNumber customerPhoneNumber =
                 customerPhoneNumberService.findByPhoneNumber(phoneNumber);
+
+        if(customerPhoneNumber.isRegistered()){
+            throw new BadRequestException(ErrorMessage.CUSTOMER_ALREADY_REGISTERED.getErrorMessage());
+        }
+
+        CustomerPhoneNumberDto customerPhoneNumberDto =
+                customerPhoneNumberConverter.entityToDto(customerPhoneNumber);
 
         SmsRequest smsRequest = new SmsRequest(phoneNumber,
                 "Hello, " + customerPhoneNumberDto.getFirstName() + " " +
@@ -71,7 +82,9 @@ public class AuthServiceImpl implements AuthService {
                 "Welcome to FlexBank!\n Your verification code: ");
         smsSender.sendSms(smsRequest);
 
-        customerPhoneNumberDto = customerPhoneNumberService.findByPhoneNumber(phoneNumber);
+        customerPhoneNumber = customerPhoneNumberService.findByPhoneNumber(phoneNumber);
+
+        customerPhoneNumberDto = customerPhoneNumberConverter.entityToDto(customerPhoneNumber);
 
         return customerPhoneNumberDto;
     }
@@ -120,6 +133,57 @@ public class AuthServiceImpl implements AuthService {
             throw new UsernameNotFoundException(email);
 
         return customer;
+    }
+
+    @Override
+    public CustomerPhoneNumberDto verifyPhoneNumberForPasswordReset(String phoneNumber) throws Exception {
+        CustomerPhoneNumber customerPhoneNumber =
+                customerPhoneNumberService.findByPhoneNumber(phoneNumber);
+
+        CustomerPhoneNumberDto customerPhoneNumberDto =
+                customerPhoneNumberConverter.entityToDto(customerPhoneNumber);
+
+        SmsRequest smsRequest = new SmsRequest(phoneNumber,
+                "Hello, " + customerPhoneNumberDto.getFirstName() + " " +
+                        customerPhoneNumberDto.getLastName() + "! " +
+                        "Welcome to FlexBank!\n Your verification code: ");
+        smsSender.sendSmsForPasswordReset(smsRequest);
+
+        customerPhoneNumber = customerPhoneNumberService.findByPhoneNumber(phoneNumber);
+
+        customerPhoneNumberDto = customerPhoneNumberConverter.entityToDto(customerPhoneNumber);
+
+        return customerPhoneNumberDto;
+    }
+
+    @Override
+    public CustomerPhoneNumberDto verifySmsCodeForPasswordReset(
+            String phoneNumber, String smsCode) throws Exception {
+        CustomerPhoneNumberDto customerPhoneNumberDto =
+                customerPhoneNumberService.verifySmsCodeForPasswordReset(phoneNumber, smsCode);
+
+        return customerPhoneNumberDto;
+    }
+
+    @Override
+    public void resetPassword(String email, String newPassword) throws Exception {
+        Customer customer = customerRepository.findByEmail(email);
+
+        if(customer == null){
+            throw new UsernameNotFoundException(email);
+        }
+
+        customer.setPassword(bCryptPasswordEncoder.encode(newPassword));
+
+        CustomerPhoneNumber customerPhoneNumber =
+                customerPhoneNumberRepository.findByPhoneNumber(customer.getPhoneNumber());
+
+        customerPhoneNumber.setResetPasswordMessageCode(null);
+        customerPhoneNumber.setResetPasswordMessageCodeAllowed(false);
+        customerPhoneNumber.setPasswordResetAllowed(false);
+
+        customerPhoneNumberRepository.save(customerPhoneNumber);
+        customerRepository.save(customer);
     }
 
     @Override

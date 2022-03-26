@@ -28,7 +28,7 @@ public class CustomerPhoneNumberServiceImpl implements CustomerPhoneNumberServic
     }
 
     @Override
-    public CustomerPhoneNumberDto findByPhoneNumber(String phoneNumber) throws Exception {
+    public CustomerPhoneNumber findByPhoneNumber(String phoneNumber) throws Exception {
 
        CustomerPhoneNumber customerPhoneNumber =
                customerPhoneNumberRepository.findByPhoneNumber(phoneNumber);
@@ -37,14 +37,7 @@ public class CustomerPhoneNumberServiceImpl implements CustomerPhoneNumberServic
            throw new BadRequestException(ErrorMessage.WRONG_PHONE_NUMBER.getErrorMessage());
        }
 
-       if(customerPhoneNumber.isRegistered()){
-            throw new BadRequestException(ErrorMessage.CUSTOMER_ALREADY_REGISTERED.getErrorMessage());
-       }
-
-       CustomerPhoneNumberDto customerPhoneNumberDto =
-               customerPhoneNumberConverter.entityToDto(customerPhoneNumber);
-
-       return customerPhoneNumberDto;
+       return customerPhoneNumber;
     }
 
     @Override
@@ -64,6 +57,33 @@ public class CustomerPhoneNumberServiceImpl implements CustomerPhoneNumberServic
         }
 
         customerPhoneNumber.setSignupAllowed(true);
+        customerPhoneNumberRepository.save(customerPhoneNumber);
+
+        CustomerPhoneNumberDto customerPhoneNumberDto =
+                customerPhoneNumberConverter.entityToDto(customerPhoneNumber);
+
+        return customerPhoneNumberDto;
+    }
+
+    @Override
+    public CustomerPhoneNumberDto verifySmsCodeForPasswordReset(
+            String phoneNumber, String smsCode) throws Exception {
+
+        CustomerPhoneNumber customerPhoneNumber =
+                customerPhoneNumberRepository.findByPhoneNumber(phoneNumber);
+
+        if(customerPhoneNumber.getResetPasswordMessageCodeAttempt() > 3){
+            throw new BadRequestException(ErrorMessage.ATTEMPT_NOT_ALLOWED.getErrorMessage());
+        }
+
+        if(!customerPhoneNumber.getResetPasswordMessageCode().equals(smsCode)){
+            customerPhoneNumber.setResetPasswordMessageCodeAttempt(
+                    customerPhoneNumber.getResetPasswordMessageCodeAttempt() + 1);
+            customerPhoneNumberRepository.save(customerPhoneNumber);
+            throw new BadRequestException(ErrorMessage.WRONG_MESSAGE_CODE.getErrorMessage());
+        }
+
+        customerPhoneNumber.setPasswordResetAllowed(true);
         customerPhoneNumberRepository.save(customerPhoneNumber);
 
         CustomerPhoneNumberDto customerPhoneNumberDto =

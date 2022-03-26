@@ -52,4 +52,15 @@ public class CustomerPhoneNumber {
     @Column(name = "message_code_attempt")
     private int messageCodeAttempt;
 
+    @Column(name = "reset_password_message_code")
+    private String resetPasswordMessageCode;
+
+    @Column(name = "is_reset_password_message_code_allowed")
+    private boolean isResetPasswordMessageCodeAllowed;
+
+    @Column(name = "reset_password_message_code_attempt")
+    private int resetPasswordMessageCodeAttempt;
+
+    @Column(name = "is_password_reset_allowed")
+    private boolean isPasswordResetAllowed;
 }

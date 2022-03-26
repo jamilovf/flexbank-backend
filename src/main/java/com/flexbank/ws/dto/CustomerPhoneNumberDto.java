@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import java.time.LocalDate;
 
 @Data
@@ -22,5 +23,8 @@ public class CustomerPhoneNumberDto {
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
+    private String resetPasswordMessageCode;
+    private boolean isResetPasswordMessageCodeAllowed;
+    private boolean isPasswordResetAllowed;
 
 }

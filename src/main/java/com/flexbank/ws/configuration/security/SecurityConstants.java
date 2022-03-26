@@ -19,6 +19,11 @@ public class SecurityConstants {
     public static final String VERIFY_SMS_CODE_URL = "/api/auth/verifySmsCode";
     public static final String SIGNUP_URL = "/api/auth/signup";
     public static final String SIGNIN_URL = "/api/auth/signin";
+    public static final String RESET_PASSWORD_URL = "/api/auth/resetPassword";
+    public static final String RESET_PASSWORD_VERIFY_PHONE_NUMBER_URL =
+            "/api/auth/verifyPhoneNumberForPasswordReset";
+    public static final String RESET_PASSWORD_SMS_CODE_URL = "/api/auth/verifySmsCodeForPasswordReset";
+
 
     public static String getTokenSecret(){
         return jwtConfiguration.getTokenSecret();

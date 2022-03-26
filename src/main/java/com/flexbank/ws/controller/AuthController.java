@@ -3,6 +3,7 @@ package com.flexbank.ws.controller;
 import com.flexbank.ws.dto.CustomerDto;
 import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.dto.request.PhoneNumberRequest;
+import com.flexbank.ws.dto.request.ResetPasswordRequest;
 import com.flexbank.ws.dto.request.SmsCodeRequest;
 import com.flexbank.ws.service.inter.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,34 @@ public class AuthController {
         authService.signup(customerDto);
 
         return ResponseEntity.ok("Successful signup!");
+    }
+
+    @PostMapping("/verifyPhoneNumberForPasswordReset")
+    public ResponseEntity<?> verifyPhoneNumberForPasswordReset(
+            @RequestBody PhoneNumberRequest phoneNumberRequest) throws Exception {
+
+        CustomerPhoneNumberDto customerPhoneNumberDto =
+                authService.verifyPhoneNumberForPasswordReset(phoneNumberRequest.getPhoneNumber());
+
+        return ResponseEntity.ok(customerPhoneNumberDto);
+    }
+
+    @PostMapping("/verifySmsCodeForPasswordReset")
+    public ResponseEntity<?> verifySmsCodeForPasswordReset(
+            @RequestBody SmsCodeRequest smsCodeRequest) throws Exception {
+
+        CustomerPhoneNumberDto customerPhoneNumberDto =
+                authService.verifySmsCodeForPasswordReset(smsCodeRequest.getPhoneNumber(),
+                        smsCodeRequest.getSmsCode());
+
+        return ResponseEntity.ok(customerPhoneNumberDto);
+    }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws Exception {
+        authService.resetPassword(resetPasswordRequest.getEmail(),
+                resetPasswordRequest.getNewPassword());
+
+        return ResponseEntity.ok("Password is changed successfully!");
     }
 }

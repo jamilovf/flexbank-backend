@@ -49,4 +49,27 @@ public class TwilioSmsSender implements SmsSender {
         MessageCreator messageCreator = Message.creator(to, from, message);
         messageCreator.create();
     }
+
+    @Override
+    public void sendSmsForPasswordReset(SmsRequest smsRequest) {
+        PhoneNumber to = new PhoneNumber(smsRequest.getPhoneNumber());
+        PhoneNumber from = new PhoneNumber(twilioConfiguration.getTrialNumber());
+        String message = smsRequest.getMessage();
+
+        Random random = new Random();
+        String messageCode = String.valueOf(random.nextInt(twilioConfiguration.getBound()) +
+                twilioConfiguration.getStart());
+        message = message + messageCode;
+
+        CustomerPhoneNumber customerPhoneNumber =
+                customerPhoneNumberRepository.findByPhoneNumber(smsRequest.getPhoneNumber());
+
+        customerPhoneNumber.setResetPasswordMessageCode(messageCode);
+        customerPhoneNumber.setResetPasswordMessageCodeAllowed(true);
+
+        customerPhoneNumberRepository.save(customerPhoneNumber);
+
+        MessageCreator messageCreator = Message.creator(to, from, message);
+        messageCreator.create();
+    }
 }
