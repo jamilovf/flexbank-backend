@@ -7,11 +7,13 @@ import com.flexbank.ws.dto.request.LoanPaymentRequest;
 import com.flexbank.ws.service.inter.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Secured("ROLE_CUSTOMER")
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {
