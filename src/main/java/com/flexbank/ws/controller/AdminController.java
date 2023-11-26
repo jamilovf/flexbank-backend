@@ -4,6 +4,7 @@ import com.flexbank.ws.dto.CustomerPhoneNumberDto;
 import com.flexbank.ws.dto.LoanRequestNotificationDto;
 import com.flexbank.ws.dto.request.LoanResultRequest;
 import com.flexbank.ws.service.inter.AdminService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -13,15 +14,11 @@ import java.util.List;
 
 @Secured("ROLE_ADMIN")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/admin")
 public class AdminController {
 
     private final AdminService adminService;
-
-    @Autowired
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
-    }
 
     @PostMapping("/registerCustomerDetails")
     public ResponseEntity<?> registerCustomerDetails(

@@ -12,6 +12,7 @@ import com.flexbank.ws.repository.LoanNotificationRepository;
 import com.flexbank.ws.repository.LoanRequestRepository;
 import com.flexbank.ws.service.inter.AdminService;
 import com.flexbank.ws.util.LoanUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,24 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
     private final CustomerPhoneNumberRepository customerPhoneNumberRepository;
     private final CustomerPhoneNumberConverter customerPhoneNumberConverter;
     private final LoanRequestRepository loanRequestRepository;
     private final LoanNotificationRepository loanNotificationRepository;
-
-
-    @Autowired
-    public AdminServiceImpl(CustomerPhoneNumberRepository customerPhoneNumberRepository,
-                            CustomerPhoneNumberConverter customerPhoneNumberConverter,
-                            LoanRequestRepository loanRequestRepository,
-                            LoanNotificationRepository loanNotificationRepository) {
-        this.customerPhoneNumberRepository = customerPhoneNumberRepository;
-        this.customerPhoneNumberConverter = customerPhoneNumberConverter;
-        this.loanRequestRepository = loanRequestRepository;
-        this.loanNotificationRepository = loanNotificationRepository;
-    }
 
     @Override
     public void registerCustomerDetails(CustomerPhoneNumberDto customerPhoneNumberDto) {

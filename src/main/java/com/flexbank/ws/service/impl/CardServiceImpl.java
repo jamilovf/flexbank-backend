@@ -14,6 +14,7 @@ import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.CardService;
 import com.flexbank.ws.util.CardUtils;
 import com.flexbank.ws.util.CustomerUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
@@ -31,17 +33,6 @@ public class CardServiceImpl implements CardService {
     private final BankDetailsConfiguration bankDetailsConfiguration;
 
     private final CardConverter cardConverter;
-
-    @Autowired
-    public CardServiceImpl(CardRepository cardRepository,
-                           CustomerRepository customerRepository,
-                           BankDetailsConfiguration bankDetailsConfiguration,
-                           CardConverter cardConverter) {
-        this.cardRepository = cardRepository;
-        this.customerRepository = customerRepository;
-        this.bankDetailsConfiguration = bankDetailsConfiguration;
-        this.cardConverter = cardConverter;
-    }
 
     @Override
     public List<CardDto> findAllByCustomerId(Integer customerId) {

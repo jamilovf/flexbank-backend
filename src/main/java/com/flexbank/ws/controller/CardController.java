@@ -3,6 +3,7 @@ package com.flexbank.ws.controller;
 import com.flexbank.ws.dto.CardDto;
 import com.flexbank.ws.dto.request.BlockCardRequest;
 import com.flexbank.ws.service.inter.CardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -13,15 +14,11 @@ import java.util.List;
 
 @Secured("ROLE_CUSTOMER")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/cards")
 public class CardController {
 
     private final CardService cardService;
-
-    @Autowired
-    public CardController(CardService cardService) {
-        this.cardService = cardService;
-    }
 
     @GetMapping("/findAll")
     public ResponseEntity<?> findAllByCustomerId(Authentication authentication){

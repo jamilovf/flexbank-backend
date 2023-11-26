@@ -14,6 +14,7 @@ import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.repository.LoanNotificationRepository;
 import com.flexbank.ws.repository.TransactionRepository;
 import com.flexbank.ws.service.inter.TransactionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
@@ -43,25 +45,6 @@ public class TransactionServiceImpl implements TransactionService {
     private final RabbitMqConfiguration rabbitMqConfiguration;
 
     private final TransactionConverter transactionConverter;
-
-    public TransactionServiceImpl(TransactionRepository transactionRepository,
-                                  CustomerRepository customerRepository,
-                                  CardRepository cardRepository,
-                                  LoanNotificationRepository loanNotificationRepository, IbanApiClient ibanApiClient,
-                                  DirectExchange exchange,
-                                  RabbitTemplate rabbitTemplate,
-                                  RabbitMqConfiguration rabbitMqConfiguration,
-                                  TransactionConverter transactionConverter) {
-        this.transactionRepository = transactionRepository;
-        this.customerRepository = customerRepository;
-        this.cardRepository = cardRepository;
-        this.loanNotificationRepository = loanNotificationRepository;
-        this.ibanApiClient = ibanApiClient;
-        this.exchange = exchange;
-        this.rabbitTemplate = rabbitTemplate;
-        this.rabbitMqConfiguration = rabbitMqConfiguration;
-        this.transactionConverter = transactionConverter;
-    }
 
     @Override
     public List<TransactionDto> findAllByCustomerId(Integer customerId, int page, int limit) {

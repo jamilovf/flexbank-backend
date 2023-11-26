@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flexbank.ws.configuration.ibanapi.IbanApiConfiguration;
 import com.flexbank.ws.configuration.ibanapi.IbanApiConstants;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
@@ -16,16 +17,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@RequiredArgsConstructor
 public class IbanApiClient {
 
     private final RestTemplate restTemplate;
     private final IbanApiConfiguration ibanApiConfiguration;
-
-    @Autowired
-    public IbanApiClient(RestTemplate restTemplate, IbanApiConfiguration ibanApiConfiguration) {
-        this.restTemplate = restTemplate;
-        this.ibanApiConfiguration = ibanApiConfiguration;
-    }
 
     public IbanApiModel validateIban(String iban){
 

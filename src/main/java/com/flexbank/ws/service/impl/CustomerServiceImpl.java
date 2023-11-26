@@ -8,21 +8,15 @@ import com.flexbank.ws.exception.BadRequestException;
 import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.repository.CustomerRepository;
 import com.flexbank.ws.service.inter.CustomerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final CustomerConverter customerConverter;
-
-
-    public CustomerServiceImpl(CustomerRepository customerRepository,
-                               CustomerConverter customerConverter) {
-        this.customerRepository = customerRepository;
-        this.customerConverter = customerConverter;
-
-    }
 
     @Override
     public void findByEmail(String email) throws Exception {

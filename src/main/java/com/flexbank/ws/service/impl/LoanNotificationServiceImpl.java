@@ -5,6 +5,7 @@ import com.flexbank.ws.dto.LoanNotificationDto;
 import com.flexbank.ws.entity.LoanNotification;
 import com.flexbank.ws.repository.LoanNotificationRepository;
 import com.flexbank.ws.service.inter.LoanNotificationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class LoanNotificationServiceImpl implements LoanNotificationService {
 
     private final LoanNotificationRepository loanNotificationRepository;
 
     private final LoanNotificationConverter loanNotificationConverter;
-
-    @Autowired
-    public LoanNotificationServiceImpl(LoanNotificationRepository loanNotificationRepository, LoanNotificationConverter loanNotificationConverter) {
-        this.loanNotificationRepository = loanNotificationRepository;
-        this.loanNotificationConverter = loanNotificationConverter;
-    }
 
     @Override
     public List<LoanNotificationDto> findAllByCustomerId(Integer customerId) {

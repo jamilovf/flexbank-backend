@@ -6,21 +6,16 @@ import com.flexbank.ws.entity.LoanRequest;
 import com.flexbank.ws.entity.LoanRequestType;
 import com.flexbank.ws.repository.LoanRequestRepository;
 import com.flexbank.ws.service.inter.LoanRequestService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class LoanRequestServiceImpl implements LoanRequestService {
 
     private final LoanRequestRepository loanRequestRepository;
     private final LoanRequestConverter loanRequestConverter;
-
-    @Autowired
-    public LoanRequestServiceImpl(LoanRequestRepository loanRequestRepository,
-                                  LoanRequestConverter loanRequestConverter) {
-        this.loanRequestRepository = loanRequestRepository;
-        this.loanRequestConverter = loanRequestConverter;
-    }
 
     @Override
     public void requestPersonalLoan(Integer customerId, LoanRequestDto loanRequestDto) {

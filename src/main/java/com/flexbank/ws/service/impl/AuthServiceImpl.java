@@ -18,6 +18,7 @@ import com.flexbank.ws.service.inter.AuthService;
 import com.flexbank.ws.service.inter.CustomerPhoneNumberService;
 import com.flexbank.ws.service.inter.CustomerService;
 import com.flexbank.ws.service.inter.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final CustomerPhoneNumberService customerPhoneNumberService;
@@ -42,27 +44,6 @@ public class AuthServiceImpl implements AuthService {
     private final CustomerPhoneNumberConverter customerPhoneNumberConverter;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
-
-    @Autowired
-    public AuthServiceImpl(CustomerPhoneNumberService customerPhoneNumberService,
-                           CustomerPhoneNumberRepository customerPhoneNumberRepository,
-                           SmsSender smsSender,
-                           CustomerService customerService,
-                           CustomerRepository customerRepository,
-                           CustomerConverter customerConverter,
-                           CustomerPhoneNumberConverter customerPhoneNumberConverter,
-                           BCryptPasswordEncoder bCryptPasswordEncoder,
-                           RoleRepository roleRepository) {
-        this.customerPhoneNumberService = customerPhoneNumberService;
-        this.customerPhoneNumberRepository = customerPhoneNumberRepository;
-        this.smsSender = smsSender;
-        this.customerService = customerService;
-        this.customerRepository = customerRepository;
-        this.customerConverter = customerConverter;
-        this.customerPhoneNumberConverter = customerPhoneNumberConverter;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.roleRepository = roleRepository;
-    }
 
     @Override
     public CustomerPhoneNumberDto verifyPhoneNumber(String phoneNumber) throws Exception {

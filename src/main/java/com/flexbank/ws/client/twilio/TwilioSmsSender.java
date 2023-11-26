@@ -8,24 +8,20 @@ import com.flexbank.ws.repository.CustomerPhoneNumberRepository;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.type.PhoneNumber;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class TwilioSmsSender implements SmsSender {
 
     private final TwilioConfiguration twilioConfiguration;
 
     private final CustomerPhoneNumberRepository customerPhoneNumberRepository;
 
-    @Autowired
-    public TwilioSmsSender(TwilioConfiguration twilioConfiguration,
-                           CustomerPhoneNumberRepository customerPhoneNumberRepository) {
-        this.twilioConfiguration = twilioConfiguration;
-        this.customerPhoneNumberRepository = customerPhoneNumberRepository;
-    }
 
     @Override
     public void sendSms(SmsRequest smsRequest) {

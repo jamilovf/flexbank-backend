@@ -5,6 +5,7 @@ import com.flexbank.ws.dto.request.ExternalTransferRequest;
 import com.flexbank.ws.dto.request.InternalTransferRequest;
 import com.flexbank.ws.dto.request.LoanPaymentRequest;
 import com.flexbank.ws.service.inter.TransactionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -15,15 +16,11 @@ import java.util.List;
 
 @Secured("ROLE_CUSTOMER")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;
-
-    @Autowired
-    public TransactionController(TransactionService transactionService) {
-        this.transactionService = transactionService;
-    }
 
     @GetMapping("/findAll")
     public ResponseEntity<?> findAllByCustomerId(Authentication authentication,

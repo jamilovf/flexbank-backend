@@ -8,6 +8,7 @@ import com.flexbank.ws.dto.request.ExternalTransferRequest;
 import com.flexbank.ws.entity.Card;
 import com.flexbank.ws.exception.ErrorMessage;
 import com.flexbank.ws.repository.CardRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@RequiredArgsConstructor
 public class ExternalTransferConsumer {
 
     private final IbanApiClient ibanApiClient;
@@ -22,19 +24,6 @@ public class ExternalTransferConsumer {
     private final DirectExchange exchange;
     private final RabbitTemplate rabbitTemplate;
     private final RabbitMqConfiguration rabbitMqConfiguration;
-
-    @Autowired
-    public ExternalTransferConsumer(IbanApiClient ibanApiClient,
-                                    CardRepository cardRepository,
-                                    DirectExchange exchange,
-                                    RabbitTemplate rabbitTemplate,
-                                    RabbitMqConfiguration rabbitMqConfiguration) {
-        this.ibanApiClient = ibanApiClient;
-        this.cardRepository = cardRepository;
-        this.exchange = exchange;
-        this.rabbitTemplate = rabbitTemplate;
-        this.rabbitMqConfiguration = rabbitMqConfiguration;
-    }
 
     @RabbitListener(queues = "${rabbitmq.external_transfer_queue}")
     public void validateExternalTransferMessage(ExternalTransferRequest externalTransferRequest) throws Exception {
