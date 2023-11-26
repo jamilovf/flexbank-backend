@@ -23,15 +23,11 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAllByCustomerId(Authentication authentication,
-                                                 @RequestParam(value = "page") int page,
+    public ResponseEntity<?> findAllByCustomerId(@RequestParam(value = "page") int page,
                                                  @RequestParam(value = "limit",
                                                          defaultValue = "10") int limit){
-
-        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
-
         List<TransactionDto> transactionDtos =
-                transactionService.findAllByCustomerId(customerId, page, limit);
+                transactionService.findAllByCustomerId(page, limit);
 
         return ResponseEntity.ok(transactionDtos);
     }
@@ -55,26 +51,21 @@ public class TransactionController {
     }
 
     @GetMapping("/countPages")
-    public ResponseEntity<?> getCountPages(Authentication authentication){
+    public ResponseEntity<?> getCountPages(){
 
-        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
-
-        Integer count = transactionService.countPagesByCustomerId(customerId);
+        Integer count = transactionService.countPagesByCustomerId();
 
         return ResponseEntity.ok(count);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> filterTransactions(Authentication authentication,
-                                                @RequestParam(value = "from") String from,
+    public ResponseEntity<?> filterTransactions(@RequestParam(value = "from") String from,
                                                 @RequestParam(value = "to") String to,
                                                 @RequestParam(value = "type1") String type1,
                                                 @RequestParam(value = "type2") String type2,
                                                 @RequestParam(value = "page") int page,
                                                 @RequestParam(value = "limit",
                                                         defaultValue = "3") int limit){
-
-        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
 
         if(type2.isEmpty()){
             type2 = type1;
@@ -86,8 +77,7 @@ public class TransactionController {
 
         List<TransactionDto> transactionDtos =
                 transactionService
-                        .searchTransactionsByDateAndType(customerId,
-                                from, to, type1, type2, page, limit);
+                        .searchTransactionsByDateAndType(from, to, type1, type2, page, limit);
 
         return ResponseEntity.ok(transactionDtos);
     }

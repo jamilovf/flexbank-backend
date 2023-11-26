@@ -1,6 +1,7 @@
 package com.flexbank.ws.service.impl;
 
 import com.flexbank.ws.configuration.rabbitmq.RabbitMqConfiguration;
+import com.flexbank.ws.configuration.security.SecurityContextService;
 import com.flexbank.ws.dto.CardDto;
 import com.flexbank.ws.dto.request.CardOrderRequest;
 import com.flexbank.ws.entity.CardOrder;
@@ -30,8 +31,10 @@ public class CardOrderServiceImpl implements CardOrderService {
 
     @Override
     public void orderCard(CardOrderRequest cardOrderRequest) throws Exception{
+        Integer customerId = SecurityContextService.getCurrentCustomerId();
+        cardOrderRequest.setCustomerId(customerId);
         List<CardDto> cardDtoList =
-                cardService.findAllByCustomerId(cardOrderRequest.getCustomerId());
+                cardService.findAllByCustomerId();
 
         if(!cardDtoList.isEmpty()){
         for (CardDto cardDto : cardDtoList ) {

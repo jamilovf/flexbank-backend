@@ -8,16 +8,15 @@ import java.util.List;
 
 public interface TransactionService {
 
-    List<TransactionDto> findAllByCustomerId(Integer customerId, int page, int limit);
+    List<TransactionDto> findAllByCustomerId(int page, int limit);
 
     void transferInternal(InternalTransferRequest internalTransferRequest) throws Exception;
 
     void transferExternal(ExternalTransferRequest externalTransferRequest);
 
-    Integer countPagesByCustomerId(Integer customerId);
+    Integer countPagesByCustomerId();
 
-    List<TransactionDto> searchTransactionsByDateAndType(Integer customerId,
-                                                         String from, String to,
+    List<TransactionDto> searchTransactionsByDateAndType(String from, String to,
                                                          String type1, String type2,
                                                          int page, int limit);
 

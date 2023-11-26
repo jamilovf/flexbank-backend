@@ -22,23 +22,17 @@ public class LoanRequestController {
     private final LoanRequestService loanRequestService;
 
     @PostMapping("/requestPersonalLoan")
-    public ResponseEntity<?> requestPersonalLoan(Authentication authentication,
-                                                 @RequestBody LoanRequestDto loanRequestDto){
+    public ResponseEntity<?> requestPersonalLoan(@RequestBody LoanRequestDto loanRequestDto){
 
-        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
-
-        loanRequestService.requestPersonalLoan(customerId, loanRequestDto);
+        loanRequestService.requestPersonalLoan(loanRequestDto);
 
         return ResponseEntity.ok("Your request has been considered!");
     }
 
     @PostMapping("/requestCarLoan")
-    public ResponseEntity<?> requestCarLoan(Authentication authentication,
-                                                 @RequestBody LoanRequestDto loanRequestDto){
+    public ResponseEntity<?> requestCarLoan(@RequestBody LoanRequestDto loanRequestDto){
 
-        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
-
-        loanRequestService.requestCarLoan(customerId, loanRequestDto);
+        loanRequestService.requestCarLoan(loanRequestDto);
 
         return ResponseEntity.ok("Your request has been considered!");
     }

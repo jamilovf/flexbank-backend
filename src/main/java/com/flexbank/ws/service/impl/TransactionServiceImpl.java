@@ -2,6 +2,7 @@ package com.flexbank.ws.service.impl;
 
 import com.flexbank.ws.client.ibanapi.IbanApiClient;
 import com.flexbank.ws.configuration.rabbitmq.RabbitMqConfiguration;
+import com.flexbank.ws.configuration.security.SecurityContextService;
 import com.flexbank.ws.converter.TransactionConverter;
 import com.flexbank.ws.dto.TransactionDto;
 import com.flexbank.ws.dto.request.ExternalTransferRequest;
@@ -47,7 +48,9 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionConverter transactionConverter;
 
     @Override
-    public List<TransactionDto> findAllByCustomerId(Integer customerId, int page, int limit) {
+    public List<TransactionDto> findAllByCustomerId(int page, int limit) {
+
+        Integer customerId = SecurityContextService.getCurrentCustomerId();
 
         if(page > 0) {
             page = page - 1;
@@ -140,7 +143,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Integer countPagesByCustomerId(Integer customerId) {
+    public Integer countPagesByCustomerId() {
+        Integer customerId = SecurityContextService.getCurrentCustomerId();
         int count = transactionRepository.countByCustomerId(customerId);
 
         int pageCount =  (count % 10 == 0) ? (count / 10) : (count / 10 + 1);
@@ -149,10 +153,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDto> searchTransactionsByDateAndType(Integer customerId,
-                                                                String from, String to,
+    public List<TransactionDto> searchTransactionsByDateAndType(String from, String to,
                                                                 String type1, String type2,
                                                                 int page, int limit) {
+
+        Integer customerId = SecurityContextService.getCurrentCustomerId();
 
         if(page > 0) {
             page = page - 1;

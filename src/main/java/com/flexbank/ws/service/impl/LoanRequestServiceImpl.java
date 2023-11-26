@@ -1,5 +1,6 @@
 package com.flexbank.ws.service.impl;
 
+import com.flexbank.ws.configuration.security.SecurityContextService;
 import com.flexbank.ws.converter.LoanRequestConverter;
 import com.flexbank.ws.dto.LoanRequestDto;
 import com.flexbank.ws.entity.LoanRequest;
@@ -18,7 +19,9 @@ public class LoanRequestServiceImpl implements LoanRequestService {
     private final LoanRequestConverter loanRequestConverter;
 
     @Override
-    public void requestPersonalLoan(Integer customerId, LoanRequestDto loanRequestDto) {
+    public void requestPersonalLoan(LoanRequestDto loanRequestDto) {
+
+        Integer customerId = SecurityContextService.getCurrentCustomerId();
 
         loanRequestDto.setType(LoanRequestType.PERSONAL);
 
@@ -30,7 +33,9 @@ public class LoanRequestServiceImpl implements LoanRequestService {
     }
 
     @Override
-    public void requestCarLoan(Integer customerId, LoanRequestDto loanRequestDto) {
+    public void requestCarLoan(LoanRequestDto loanRequestDto) {
+
+        Integer customerId = SecurityContextService.getCurrentCustomerId();
 
         loanRequestDto.setType(LoanRequestType.CAR);
 

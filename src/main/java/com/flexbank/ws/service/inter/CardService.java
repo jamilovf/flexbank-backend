@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CardService {
 
-    List<CardDto> findAllByCustomerId(Integer customerId);
+    List<CardDto> findAllByCustomerId();
 
     CardDto blockCard(Integer id) throws Exception;
 

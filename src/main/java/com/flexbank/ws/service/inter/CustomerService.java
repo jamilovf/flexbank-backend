@@ -11,7 +11,7 @@ public interface CustomerService {
 
     void save(Customer customer);
 
-    void updateAccount(Integer customerId, UpdateCustomerRequest updateCustomerRequest);
+    void updateAccount(UpdateCustomerRequest updateCustomerRequest);
 
-    CustomerDetailsDto getAccountDetails(Integer customerId);
+    CustomerDetailsDto getAccountDetails();
 }

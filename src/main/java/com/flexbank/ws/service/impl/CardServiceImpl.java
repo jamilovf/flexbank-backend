@@ -1,6 +1,7 @@
 package com.flexbank.ws.service.impl;
 
 import com.flexbank.ws.configuration.bankdetails.BankDetailsConfiguration;
+import com.flexbank.ws.configuration.security.SecurityContextService;
 import com.flexbank.ws.converter.CardConverter;
 import com.flexbank.ws.dto.CardDto;
 import com.flexbank.ws.dto.request.CardOrderRequest;
@@ -35,8 +36,9 @@ public class CardServiceImpl implements CardService {
     private final CardConverter cardConverter;
 
     @Override
-    public List<CardDto> findAllByCustomerId(Integer customerId) {
+    public List<CardDto> findAllByCustomerId() {
 
+        Integer customerId = SecurityContextService.getCurrentCustomerId();
         List<Card> cards = cardRepository.findAllByCustomerId(customerId);
         Optional<Customer> customer = customerRepository.findById(customerId);
 

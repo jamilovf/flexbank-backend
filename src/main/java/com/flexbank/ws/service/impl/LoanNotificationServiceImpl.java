@@ -1,5 +1,6 @@
 package com.flexbank.ws.service.impl;
 
+import com.flexbank.ws.configuration.security.SecurityContextService;
 import com.flexbank.ws.converter.LoanNotificationConverter;
 import com.flexbank.ws.dto.LoanNotificationDto;
 import com.flexbank.ws.entity.LoanNotification;
@@ -22,8 +23,9 @@ public class LoanNotificationServiceImpl implements LoanNotificationService {
     private final LoanNotificationConverter loanNotificationConverter;
 
     @Override
-    public List<LoanNotificationDto> findAllByCustomerId(Integer customerId) {
+    public List<LoanNotificationDto> findAllByCustomerId() {
 
+        Integer customerId = SecurityContextService.getCurrentCustomerId();
         List<LoanNotification> loanNotifications = loanNotificationRepository.findAllByCustomerId(customerId);
 
         List<LoanNotificationDto> loanNotificationDtos =

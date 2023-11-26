@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LoanNotificationService {
 
-    List<LoanNotificationDto> findAllByCustomerId(Integer customerId);
+    List<LoanNotificationDto> findAllByCustomerId();
 }

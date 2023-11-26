@@ -18,11 +18,7 @@ public class CardOrderController {
     private final CardOrderService cardOrderService;
 
     @PostMapping("/order")
-    public ResponseEntity<?> orderCard(Authentication authentication,
-                                                 @RequestBody CardOrderRequest cardOrderRequest) throws Exception {
-
-        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
-        cardOrderRequest.setCustomerId(customerId);
+    public ResponseEntity<?> orderCard(@RequestBody CardOrderRequest cardOrderRequest) throws Exception {
 
         cardOrderService.orderCard(cardOrderRequest);
 

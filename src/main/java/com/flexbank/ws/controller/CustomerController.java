@@ -19,23 +19,18 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateAccount(Authentication authentication,
-                                           @RequestBody UpdateCustomerRequest updateCustomerRequest){
+    public ResponseEntity<?> updateAccount(@RequestBody UpdateCustomerRequest updateCustomerRequest){
 
-        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
-
-        customerService.updateAccount(customerId, updateCustomerRequest);
+        customerService.updateAccount(updateCustomerRequest);
 
         return ResponseEntity.ok("Customer is updated successfully!");
     }
 
     @GetMapping("/getDetails")
-    public ResponseEntity<?> updateAccount(Authentication authentication){
-
-        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
+    public ResponseEntity<?> updateAccount(){
 
         CustomerDetailsDto customerDetailsDto =
-                customerService.getAccountDetails(customerId);
+                customerService.getAccountDetails();
 
         return ResponseEntity.ok(customerDetailsDto);
     }

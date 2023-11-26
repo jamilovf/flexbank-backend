@@ -21,12 +21,9 @@ public class CardController {
     private final CardService cardService;
 
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAllByCustomerId(Authentication authentication){
+    public ResponseEntity<?> findAllByCustomerId(){
 
-        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
-
-        List<CardDto> cardDtos =
-                cardService.findAllByCustomerId(customerId);
+        List<CardDto> cardDtos = cardService.findAllByCustomerId();
 
         return ResponseEntity.ok(cardDtos);
     }

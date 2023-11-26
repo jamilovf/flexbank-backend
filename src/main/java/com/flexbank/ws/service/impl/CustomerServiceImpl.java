@@ -1,5 +1,6 @@
 package com.flexbank.ws.service.impl;
 
+import com.flexbank.ws.configuration.security.SecurityContextService;
 import com.flexbank.ws.converter.CustomerConverter;
 import com.flexbank.ws.dto.CustomerDetailsDto;
 import com.flexbank.ws.dto.request.UpdateCustomerRequest;
@@ -34,8 +35,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateAccount(Integer customerId, UpdateCustomerRequest updateCustomerRequest) {
+    public void updateAccount(UpdateCustomerRequest updateCustomerRequest) {
 
+        Integer customerId = SecurityContextService.getCurrentCustomerId();
         Customer customer = customerRepository.findById(customerId).get();
 
         customer.setAddress(updateCustomerRequest.getAddress());
@@ -47,8 +49,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDetailsDto getAccountDetails(Integer customerId) {
+    public CustomerDetailsDto getAccountDetails() {
 
+        Integer customerId = SecurityContextService.getCurrentCustomerId();
         Customer customer = customerRepository.findById(customerId).get();
 
         CustomerDetailsDto customerDetailsDto = customerConverter.entityToDetailsDto(customer);

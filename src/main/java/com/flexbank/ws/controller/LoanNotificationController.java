@@ -20,12 +20,9 @@ public class LoanNotificationController {
     private final LoanNotificationService loanNotificationService;
 
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAllByCustomerId(Authentication authentication){
+    public ResponseEntity<?> findAllByCustomerId(){
 
-        Integer customerId = Integer.parseInt(authentication.getPrincipal().toString());
-
-        List<LoanNotificationDto> loanNotificationDtos =
-                loanNotificationService.findAllByCustomerId(customerId);
+        List<LoanNotificationDto> loanNotificationDtos = loanNotificationService.findAllByCustomerId();
 
         return ResponseEntity.ok(loanNotificationDtos);
     }
